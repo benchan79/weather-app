@@ -10,17 +10,27 @@ import getUrl from './services/weatherApi';
 
 function App() {
   
-  const [location, setLocation] = useState('singapore');
+  const [searchParam, setSearchParam] = useState(null);
+  const [dataType, setDataType] = useState(null);
+  const [weather, setWeather] = useState(null);
 
   // get data upon search submit
-  // NOTE: datatype weather is currently hardcoded
   const getSearchData = (searchInputs) => {
-    setLocation(searchInputs);
+    setSearchParam(searchInputs);
+    setDataType('weather');
   }
 
+  // useEffect(() => {
+  //   getUrl(dataType, searchParam);
+  // }, [searchParam]);
+
   useEffect(() => {
-    getUrl('weather', location)
-  }, [location])
+    const fetchUrlData = async() => await getUrl(dataType, searchParam)
+      .then((res) => {
+        setWeather(res);
+      })
+    fetchUrlData();
+  }, [searchParam])
 
   return (
     <div className='App'>
@@ -28,13 +38,18 @@ function App() {
         <div className='mx-auto max-w-screen-md h-fit'>
           <SearchBar onSubmit={getSearchData}/>
         </div>
-        <div className='mx-auto max-w-screen-md h-fit shadow-xl p-10 bg-white bg-opacity-75 mt-10'>
-          <CurrentDisplay />
-        </div>
-        <div className='mx-auto max-w-screen-md h-fit shadow-xl p-10 bg-white bg-opacity-75 mt-10'>
-          <HourlyDisplay />
-          <WeeklyDisplay />
-        </div>
+        {/* below components only show when search returns weather data */}
+        {weather && (
+          <div>
+            <div className='mx-auto max-w-screen-md h-fit shadow-xl p-10 bg-white bg-opacity-75 mt-10'>
+              <CurrentDisplay weather={weather} />
+            </div>
+            <div className='mx-auto max-w-screen-md h-fit shadow-xl p-10 bg-white bg-opacity-75 mt-10'>
+              <HourlyDisplay />
+              <WeeklyDisplay />
+            </div>
+          </div>
+        )}
     </div>
     </div>
   );
