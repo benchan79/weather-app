@@ -33,7 +33,9 @@ const formatApiResponse = (data) => {
 const getUrl = async(dataType, searchParams) => {
     return await axios.get(BASE_URL + "/" + dataType, {
         params: {
-            q: searchParams,
+            // q: searchParams,
+            lat: searchParams.lat,
+            lon: searchParams.lon,
             appid: API_KEY,
             units: 'metric'
         }
