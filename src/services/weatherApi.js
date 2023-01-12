@@ -4,6 +4,7 @@ const API_KEY = 'd5c54a92b47f0f9c49fa254decc1ac92';
 const BASE_URL= `https://api.openweathermap.org/data/2.5`;
 
 const formatApiResponse = (data) => {
+    console.log (data)
     let {
         name,
         coord: {
@@ -37,7 +38,7 @@ const getUrl = async(dataType, searchParams) => {
             lat: searchParams.lat,
             lon: searchParams.lon,
             appid: API_KEY,
-            units: 'metric'
+            units: searchParams.units || 'metric'
         }
     })
         .then((response) => {

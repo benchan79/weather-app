@@ -81,7 +81,10 @@ const SearchBar = ({ onSubmit }) => {
         <button onClick={handleSubmitZip} className="p-4">
           <FaSearch size={20} />
         </button>
+        <hr/>
+
       </form>
+      
       <form className="flex justify-between bg-white rounded-lg w-full">
         <GeoDBSearch 
           onSearchChange={onSearchChange} 

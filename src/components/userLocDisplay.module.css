@@ -1,10 +1,29 @@
-.userLocCard{
-    display:flex;
-    flex-direction: row;
-    justify-content: center;
-    width:auto;
-    background:wheat;
-    font-weight: 500;
-    font-size: 0.875rem;
-    padding:0.2rem;
+.userLocCard {
+  text-align: center;
+  width: 100%;
+
+  padding: 0.5rem;
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: white;
+  text-decoration-line: underline;
+}
+
+.userLocButton {
+  background-color: #04AA6D;
+  color: white;
+  margin-inline: 0.20rem;
+  margin-top: 0.2rem;
+  padding: 1rem;
+  font-size: 1.5rem;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.userLocButton:hover {
+  background-color: #038050;
+}
+
+.userLocButton:active {
+  background-color: rgb(172, 238, 175);
 }

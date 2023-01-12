@@ -27,6 +27,7 @@ export const geoAPIGetByZip = async( searchInputs, onSubmit) => {
 
 export const geoAPIGetByCity = async( searchInputs, onSubmit) => {
   const {city, countryCode, limit} = searchInputs; 
+
   try {
     const [searchResults] = await Promise.all([
       geoAPI.get(`direct?q=${city},${countryCode}&limit=${limit}&APPID=${API_KEY}`),
@@ -45,3 +46,15 @@ export const geoAPIGetByCity = async( searchInputs, onSubmit) => {
   }
 }
 
+export const geoAPIGetByCoords = async(searchInputs, onSubmit) => {
+  const {lat, lon, limit} = searchInputs; 
+  try {
+    const [searchResults] = await Promise.all([
+      geoAPI.get(`reverse?lat=${lat}&lon=${lon}&limit=${limit}&APPID=${API_KEY}`),
+    ])
+    console.log(searchResults.data[0])
+    onSubmit(searchResults.data[0])
+  } catch (error) {
+    console.log(error.message);
+  }
+}
