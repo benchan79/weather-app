@@ -12,7 +12,14 @@ export const geoAPIGetByZip = async( searchInputs, onSubmit) => {
       geoAPI.get(`zip?zip=${zip},SG&APPID=${API_KEY}`),
     ])
     console.log(searchResults.data)
-    onSubmit(searchResults.data)
+    const result = {
+      name: searchResults.data.name,
+      country: searchResults.data.country,
+      zip: searchResults.data.zip,
+      lat: searchResults.data.lat,
+      lon: searchResults.data.lon
+    }
+    onSubmit(result)
   } catch (error) {
     console.log(error.message);
   }
@@ -25,7 +32,14 @@ export const geoAPIGetByCity = async( searchInputs, onSubmit) => {
       geoAPI.get(`direct?q=${city},${countryCode}&limit=${limit}&APPID=${API_KEY}`),
     ])
     console.log(searchResults.data[0])
-    onSubmit(searchResults.data[0])
+    const result = {
+      name: searchResults.data[0].name,
+      country: searchResults.data[0].country,
+      state: searchResults.data[0].state,
+      lat: searchResults.data[0].lat,
+      lon: searchResults.data[0].lon
+    }
+    onSubmit(result)
   } catch (error) {
     console.log(error.message);
   }
