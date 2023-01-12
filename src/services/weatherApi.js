@@ -3,9 +3,8 @@ import axios from "axios";
 const API_KEY = 'd5c54a92b47f0f9c49fa254decc1ac92';
 const BASE_URL= `https://api.openweathermap.org/data/2.5`;
 
-const formatApiResponse = (data) => {
+const formatApiResponse = (data, searchParams) => {
     let {
-        name,
         coord: {
             lat,
             lon
@@ -27,6 +26,8 @@ const formatApiResponse = (data) => {
             }
         }
     } = data;
+    const state = searchParams.state ? `${searchParams.state},` : "";
+    const name = `${searchParams.name}, ` + `${state} ` + `${searchParams.country}`
     return {name, lat, lon, feels_like, temp, temp_min, temp_max, humidity, speed, description, icon};
 }
 
@@ -41,7 +42,7 @@ const getUrl = async(dataType, searchParams) => {
         }
     })
         .then((response) => {
-            let formattedData = formatApiResponse(response.data);
+            let formattedData = formatApiResponse(response.data, searchParams);
             return formattedData;
         })
         .catch((error) => {
