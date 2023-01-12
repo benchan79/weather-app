@@ -1,1 +1,9 @@
-node_modules
+# dependencies
+/node_modules
+
+# production
+/build
+
+# misc
+.env
+.env.local
