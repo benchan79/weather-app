@@ -39,17 +39,17 @@ const SearchBar = ({ onSubmit }) => {
         />
       </form>
       <form className="flex justify-between bg-white rounded-lg w-full">
+      <Select
+          className="font-light w-full shadow-xl bg-transparent h-full p-4 text-black"
+          options={countryCodes}
+          onChange={handleCountryChange}
+          placeholder="Country"
+        />
         <AsyncSelect
           className="font-light w-full shadow-xl bg-transparent h-full p-4 text-black"
           loadOptions={loadOptionsZip}
           onChange={handleZipChange}
           placeholder="Zip code"
-        />
-        <Select
-          className="font-light w-full shadow-xl bg-transparent h-full p-4 text-black"
-          options={countryCodes}
-          onChange={handleCountryChange}
-          placeholder="Country"
         />
       </form>
     </div>
