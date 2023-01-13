@@ -61,3 +61,16 @@ export const geoAPIGetByCity = async (searchValue, callback) => {
   }
   callback(options);
 };
+
+export const geoAPIGetByCoords = async(searchInputs, onSubmit) => {
+  const {lat, lon, limit} = searchInputs; 
+  try {
+    const [searchResults] = await Promise.all([
+      geoAPI.get(`reverse?lat=${lat}&lon=${lon}&limit=${limit}&APPID=${API_KEY}`),
+    ])
+    console.log(searchResults.data[0])
+    onSubmit(searchResults.data[0])
+  } catch (error) {
+    console.log(error.message);
+  }
+}
