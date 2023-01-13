@@ -1,7 +1,8 @@
 import { useState } from "react";
-import {geoAPIGetByZip, geoAPIGetByCity} from "../services/geoAPI";
+import { geoAPIGetByZip, geoAPIGetByCity } from "../services/geoAPI";
 import GeoDBSearch from "./GeoDBSearch";
 import { FaSearch } from "react-icons/fa";
+import AsyncSelect from "react-select/async";
 
 const initialState = {
   zip: "178880",
@@ -25,21 +26,6 @@ const SearchBar = ({ onSubmit }) => {
     onSubmit(result);
   };
 
-  const handleSubmitCity = (event) => {
-    event.preventDefault();
-    geoAPIGetByCity(searchInputs, onSubmit);
-  };
-
-  const handleCityChange = (event) => {
-    event.preventDefault();
-    const city = event.target.value.split(",")[0]
-    const countryCode = event.target.value.split(",")[1]
-    setSearchInputs({ ...searchInputs, 
-      city: city, 
-      countryCode:countryCode 
-    });
-  };
-
   const handleSubmitZip = (event) => {
     event.preventDefault();
     geoAPIGetByZip(searchInputs, onSubmit);
@@ -50,22 +36,25 @@ const SearchBar = ({ onSubmit }) => {
     setSearchInputs({ ...searchInputs, zip: event.target.value });
   };
 
+  const handleCityChange = (selectedOption) => {
+    console.log("handleAsyncChange", selectedOption);
+    onSubmit(selectedOption.value);
+  };
+
+  const loadOptions = (searchValue, callback) => {
+    return geoAPIGetByCity(searchValue, callback);
+  };
+
   return (
     <div className="flex flex-row justify-center w-full">
-      <form
-        onSubmit={handleSubmitCity}
-        className="flex justify-between bg-white rounded-lg w-full"
-      >
-        <input
-          onChange={handleCityChange}
+      <form className="flex justify-between bg-white rounded-lg w-full">
+        <AsyncSelect
           className="font-light w-full shadow-xl bg-transparent h-full p-4 text-black"
-          name="location"
-          type="text"
-          placeholder="Type a location here"
+          loadOptions={loadOptions}
+          // defaultOptions
+          onChange={handleCityChange}
+          placeholder="City, Country code"
         />
-        <button onClick={handleSubmitCity} className="p-4">
-          <FaSearch size={20} />
-        </button>
       </form>
       <form
         onSubmit={handleSubmitZip}
@@ -76,16 +65,14 @@ const SearchBar = ({ onSubmit }) => {
           className="font-light w-full shadow-xl bg-transparent h-full p-4 text-black"
           name="location"
           type="text"
-          placeholder="Type a Singapore Postal Code here"
+          placeholder="Sg Postal Code"
         />
         <button onClick={handleSubmitZip} className="p-4">
           <FaSearch size={20} />
         </button>
       </form>
       <form className="flex justify-between bg-white rounded-lg w-full">
-        <GeoDBSearch 
-          onSearchChange={onSearchChange} 
-        />
+        <GeoDBSearch onSearchChange={onSearchChange} />
       </form>
     </div>
   );

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_KEY = 'd5c54a92b47f0f9c49fa254decc1ac92';
+const API_KEY = '1e3039792caea495f5c730bd5144ded6';
 const BASE_URL= `https://api.openweathermap.org/data/2.5`;
 
 const formatApiResponse = (data, searchParams) => {
@@ -26,8 +26,8 @@ const formatApiResponse = (data, searchParams) => {
             }
         }
     } = data;
-    const state = searchParams.state ? `${searchParams.state},` : "";
-    const name = `${searchParams.name}, ` + `${state} ` + `${searchParams.country}`
+    const state = searchParams.state ? ` ${searchParams.state},` : "";
+    const name = `${searchParams.name},${state} ${searchParams.country}`;
     return {name, lat, lon, feels_like, temp, temp_min, temp_max, humidity, speed, description, icon};
 }
 

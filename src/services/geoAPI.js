@@ -1,47 +1,55 @@
-import axios from 'axios';
+import axios from "axios";
 
-const API_KEY = "92fc5bd07e7c2e622ac3a9b5df3cce07";
+const API_KEY = "1e3039792caea495f5c730bd5144ded6";
 const BASE_URL = "http://api.openweathermap.org/geo/1.0/";
 
-const geoAPI = axios.create({  baseURL: BASE_URL });
+const geoAPI = axios.create({ baseURL: BASE_URL });
 
-export const geoAPIGetByZip = async( searchInputs, onSubmit) => {
-  const {zip} = searchInputs; 
+export const geoAPIGetByZip = async (searchInputs, onSubmit) => {
+  const { zip } = searchInputs;
   try {
     const [searchResults] = await Promise.all([
       geoAPI.get(`zip?zip=${zip},SG&APPID=${API_KEY}`),
-    ])
-    console.log(searchResults.data)
+    ]);
+    console.log(searchResults.data);
     const result = {
       name: searchResults.data.name,
       country: searchResults.data.country,
       zip: searchResults.data.zip,
       lat: searchResults.data.lat,
-      lon: searchResults.data.lon
-    }
-    onSubmit(result)
+      lon: searchResults.data.lon,
+    };
+    onSubmit(result);
   } catch (error) {
     console.log(error.message);
   }
-}
+};
 
-export const geoAPIGetByCity = async( searchInputs, onSubmit) => {
-  const {city, countryCode, limit} = searchInputs; 
+export const geoAPIGetByCity = async (searchValue, callback) => {
+  const [city, countryCode] = searchValue.split(",");
+  let optionz = [];
   try {
     const [searchResults] = await Promise.all([
-      geoAPI.get(`direct?q=${city},${countryCode}&limit=${limit}&APPID=${API_KEY}`),
-    ])
-    console.log(searchResults.data[0])
-    const result = {
-      name: searchResults.data[0].name,
-      country: searchResults.data[0].country,
-      state: searchResults.data[0].state,
-      lat: searchResults.data[0].lat,
-      lon: searchResults.data[0].lon
-    }
-    onSubmit(result)
+      geoAPI.get(`direct?q=${city},${countryCode}&limit=5&APPID=${API_KEY}`),
+    ]);
+    // console.log(searchResults.data);
+    searchResults.data.map((city) =>
+      optionz.push({
+        label: `${city.name}, ${city.state ? city.state + ", " : ""}${
+          city.country
+        }`,
+        value: {
+          name: city.name,
+          state: city.state,
+          country: city.country,
+          lat: city.lat,
+          lon: city.lon,
+        },
+      })
+    );
+    return optionz;
   } catch (error) {
     console.log(error.message);
   }
-}
-
+  callback(optionz);
+};
