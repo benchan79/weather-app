@@ -28,7 +28,8 @@ const formatApiResponse = (data, searchParams) => {
         }
     } = data;
     const state = searchParams.state ? ` ${searchParams.state},` : "";
-    const name = `${searchParams.name},${state} ${searchParams.country}`;
+    const zip = searchParams.zip ? ` (${searchParams.zip})` : "";
+    const name = `${searchParams.name},${state} ${searchParams.country}${zip}`;
     return {name, lat, lon, feels_like, temp, temp_min, temp_max, humidity, speed, description, icon};
 }
 

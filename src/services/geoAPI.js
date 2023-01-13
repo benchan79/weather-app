@@ -14,9 +14,7 @@ export const geoAPIGetByZip = async (countryCode, searchValue, callback) => {
     // console.log(searchResults.data);
     const city = searchResults.data;
     options.push({
-      label: `${city.name}, ${city.state ? city.state + ", " : ""}${
-        city.country
-      }`,
+      label: `${city.name}, ${city.state ? city.state + ", " : ""}${city.country} ${city.zip}`,
       value: {
         name: city.name,
         state: city.state,
