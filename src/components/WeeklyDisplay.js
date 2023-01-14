@@ -4,14 +4,7 @@ function WeeklyForecast({ weather }) {
   const icon_URL = "http://openweathermap.org/img/wn/";
 
   function timeConverter(timestamp) {
-    const date = new Date(timestamp * 1000);
-    // const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    // const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-    // const dayOfWk = days[date.getDay()];
-    // const month = months[date.getMonth()];
-    // const dayOfMth = date.getDate();
-    // const custom = `${dayOfWk}, ${dayOfMth} ${month}`;
-    // const dateString = date.toDateString().slice(0, -5);
+    const date = new Date((timestamp + weather.city.timezone - 28800) * 1000);
     const dateString = date.toDateString().split(" ");
     const formattedDate = `${dateString[0]}, ${dateString[2]} ${dateString[1]}`
     return formattedDate;
