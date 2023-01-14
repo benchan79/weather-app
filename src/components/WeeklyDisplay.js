@@ -19,7 +19,7 @@ function WeeklyForecast({ weather }) {
     <>
       <div className="text-blue-800 mt-10">
         <div className="flex items-center justify-start">
-          <p>Weekly Forecast</p>
+          <p>Daily Forecast</p>
         </div>
         <hr className="my-3" />
         <div className="flex flex-row items-center justify-between">
