@@ -61,7 +61,7 @@ const getUrl = async(searchParams) => {
                 params: {
                     lat: searchParams.lat,
                     lon: searchParams.lon,
-                    cnt: 5,
+                    cnt: 20,
                     appid: API_KEY,
                     units: searchParams.units || 'metric'
                 }
@@ -70,6 +70,7 @@ const getUrl = async(searchParams) => {
                 params: {
                     lat: searchParams.lat,
                     lon: searchParams.lon,
+                    cnt: 15,
                     appid: API_KEY,
                     units: searchParams.units || 'metric'
                 }
