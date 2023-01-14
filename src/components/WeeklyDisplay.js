@@ -11,8 +11,10 @@ function WeeklyForecast({ weather }) {
     // const month = months[date.getMonth()];
     // const dayOfMth = date.getDate();
     // const custom = `${dayOfWk}, ${dayOfMth} ${month}`;
-    const dateString = date.toDateString().slice(0, -5);
-    return dateString;
+    // const dateString = date.toDateString().slice(0, -5);
+    const dateString = date.toDateString().split(" ");
+    const formattedDate = `${dateString[0]}, ${dateString[2]} ${dateString[1]}`
+    return formattedDate;
   }
 
   return (
