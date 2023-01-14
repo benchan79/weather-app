@@ -14,13 +14,15 @@ import UserLocDisplay from './components/userLocDisplay';
 function App() {
 
   const [searchParam, setSearchParam] = useState(null);
-  const [dataType, setDataType] = useState(null);
+  // const [dataType, setDataType] = useState(null);
   const [weather, setWeather] = useState(null);
+  const [hourlyFcast, setHourlyFcast] = useState(null);
+  const [dailyFcast, setDailyFcast] = useState(null);
 
   // get data upon search submit
   const getSearchData = (searchInputs) => {
     setSearchParam(searchInputs);
-    setDataType('weather');
+    // setDataType('weather');
   }
 
   // useEffect(() => {
@@ -29,16 +31,19 @@ function App() {
 
   useEffect(
     () => {
-
       const fetchUrlData = async () =>
-        searchParam ? await getUrl(dataType, searchParam)
+        searchParam ? await getUrl(searchParam)
           .then((res) => {
-            setWeather(res);
+            setWeather(res.current);
+            setHourlyFcast(res.hourly);
+            setDailyFcast(res.daily)
           }) : null;
       fetchUrlData()
     }
     , [searchParam])
 
+  
+    
   return (
     <div className='App'>
       <div className="bg-gradient-to-r from-blue-400 to-cyan-600 p-10">
@@ -60,8 +65,8 @@ function App() {
               <CurrentDisplay weather={weather} searchParam={searchParam} getSearchData={getSearchData} />
             </div>
             <div className='mx-auto max-w-screen-md h-fit shadow-xl p-10 bg-white bg-opacity-75 mt-10'>
-              <HourlyDisplay />
-              <WeeklyDisplay />
+              <HourlyDisplay weather={hourlyFcast} />
+              <WeeklyDisplay weather={dailyFcast}/>
             </div>
           </div>
         )}
