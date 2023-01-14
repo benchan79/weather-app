@@ -61,6 +61,7 @@ const getUrl = async(searchParams) => {
                 params: {
                     lat: searchParams.lat,
                     lon: searchParams.lon,
+                    cnt: 5,
                     appid: API_KEY,
                     units: searchParams.units || 'metric'
                 }
@@ -87,34 +88,5 @@ const getUrl = async(searchParams) => {
         console.log(error.message);
     }
 }
-
-//     return await axios.get(BASE_URL + "/" + dataType, {
-//         params: {
-//             // q: searchParams,
-//             lat: searchParams.lat,
-//             lon: searchParams.lon,
-//             appid: API_KEY,
-//             units: searchParams.units || 'metric'
-//         }
-//     })
-
-
-//         .then((response) => {
-//             let formattedData = formatApiResponse(response.data, searchParams);
-//             return formattedData;
-//         })
-//         .catch((error) => {
-//             console.log(error.message)
-//         })
-// }
-
-
-
-
-
-
-
-
-
 
 export default getUrl;
