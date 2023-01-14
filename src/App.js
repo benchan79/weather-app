@@ -10,6 +10,7 @@ import getUrl from './services/weatherApi';
 import FavoritesMenu from './components/Favorites'
 import { X } from 'react-bootstrap-icons';
 import UserLocDisplay from './components/userLocDisplay';
+import { WeatherProvider } from './contexts/WeatherContext';
 
 function App() {
 
@@ -61,13 +62,15 @@ function App() {
         {/* below components only show when search returns weather data */}
         {weather && (
           <div>
-            <div className='mx-auto max-w-screen-md h-fit shadow-xl p-10 bg-white bg-opacity-75 mt-10'>
-              <CurrentDisplay weather={weather} searchParam={searchParam} getSearchData={getSearchData} />
-            </div>
-            <div className='mx-auto max-w-screen-md h-fit shadow-xl p-10 bg-white bg-opacity-75 mt-10'>
-              <HourlyDisplay weather={hourlyFcast} />
-              <WeeklyDisplay weather={dailyFcast}/>
-            </div>
+            <WeatherProvider>
+              <div className='mx-auto max-w-screen-md h-fit shadow-xl p-10 bg-white bg-opacity-75 mt-10'>
+                <CurrentDisplay weather={weather} searchParam={searchParam} getSearchData={getSearchData} />
+              </div>
+              <div className='mx-auto max-w-screen-md h-fit shadow-xl p-10 bg-white bg-opacity-75 mt-10'>
+                <HourlyDisplay weather={hourlyFcast} />
+                <WeeklyDisplay weather={dailyFcast}/>
+              </div>
+            </WeatherProvider>
           </div>
         )}
       </div>
