@@ -31,12 +31,12 @@ export const geoAPIGetByZip = async (countryCode, searchValue, callback) => {
   callback(options);
 };
 
-export const geoAPIGetByCity = async (searchValue, callback) => {
-  const [city, countryCode] = searchValue.split(",");
+export const geoAPIGetByCity = async (countryCode, searchValue, callback) => {
+  // const [city, countryCode] = searchValue.split(",");
   let options = [];
   try {
     const [searchResults] = await Promise.all([
-      geoAPI.get(`direct?q=${city},${countryCode}&limit=5&APPID=${API_KEY}`),
+      geoAPI.get(`direct?q=${searchValue},${countryCode}&limit=5&APPID=${API_KEY}`),
     ]);
     // console.log(searchResults.data);
     searchResults.data.map((city) =>
