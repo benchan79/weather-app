@@ -46,23 +46,23 @@ function App() {
   
     
   return (
-    <div className='App'>
-      <div className="bg-gradient-to-r from-blue-400 to-cyan-600 p-10">
+    <WeatherProvider>
+      <div className='App'>
+        <div className="bg-gradient-to-r from-blue-400 to-cyan-600 p-10">
 
-        <div className='mx-auto max-w-screen-md h-fit flex'>
-          <SearchBar onSubmit={getSearchData} />
-        </div>
-        <div className='mx-0 flex flex-row justify-center w-full'>
-          <p className='w-2/5'> </p>
-          <UserLocDisplay onClick={getSearchData} />
-          <FavoritesMenu onSelect={getSearchData} selectedLocation={searchParam} />
+          <div className='mx-auto max-w-screen-md h-fit flex'>
+            <SearchBar onSubmit={getSearchData} />
+          </div>
+          <div className='mx-0 flex flex-row justify-center w-full'>
+            <p className='w-2/5'> </p>
+            <UserLocDisplay onClick={getSearchData} />
+            <FavoritesMenu onSelect={getSearchData} selectedLocation={searchParam} />
 
-        </div>
+          </div>
 
-        {/* below components only show when search returns weather data */}
-        {weather && (
-          <div>
-            <WeatherProvider>
+          {/* below components only show when search returns weather data */}
+          {weather && (
+            <div>
               <div className='mx-auto max-w-screen-md h-fit shadow-xl p-10 bg-white bg-opacity-75 mt-10'>
                 <CurrentDisplay weather={weather} searchParam={searchParam} getSearchData={getSearchData} />
               </div>
@@ -70,11 +70,11 @@ function App() {
                 <HourlyDisplay weather={hourlyFcast} />
                 <WeeklyDisplay weather={dailyFcast}/>
               </div>
-            </WeatherProvider>
-          </div>
-        )}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </WeatherProvider>
   );
 }
 

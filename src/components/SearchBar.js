@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { geoAPIGetByZip, geoAPIGetByCity, geoAPIGetByCoords } from "../services/geoAPI";
 import { FaSearch } from "react-icons/fa";
 import Select from "react-select";
 import AsyncSelect from "react-select/async";
 import { countryCodes } from "../data/countries";
+import WeatherContext from "../contexts/WeatherContext";
 
 const initialState = {
   countryCode: "",
@@ -14,6 +15,7 @@ const initialState = {
 };
 
 const SearchBar = ({ onSubmit }) => {
+  const ctx = useContext(WeatherContext);
   const [searchType, setSearchType] = useState("city");
   const [searchInputs, setSearchInputs] = useState(initialState);
 
@@ -27,7 +29,8 @@ const SearchBar = ({ onSubmit }) => {
   };
 
   const handleSubmitCity = (selectedOption) => {
-    onSubmit(selectedOption.value);
+    const selection = selectedOption.value;
+    onSubmit({...selection, units: ctx.isMetric ? 'metric' : 'imperial'});
   };
 
   const handleCountryChange = (selectedOption) => {
@@ -38,12 +41,12 @@ const SearchBar = ({ onSubmit }) => {
 
   const handleSubmitZip = (event) => {
     event.preventDefault();
-    geoAPIGetByZip(searchInputs, onSubmit);
+    geoAPIGetByZip(searchInputs, onSubmit, ctx.isMetric);
   };
 
   const handleSubmitCoord = (event) => {
     event.preventDefault();
-    geoAPIGetByCoords(searchInputs, onSubmit);
+    geoAPIGetByCoords(searchInputs, onSubmit, ctx.isMetric);
   };
 
   const handleInputChange = (event) => {
