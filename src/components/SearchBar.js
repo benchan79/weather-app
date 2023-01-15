@@ -1,37 +1,57 @@
 import { useState } from "react";
-import { geoAPIGetByZip, geoAPIGetByCity } from "../services/geoAPI";
+import { geoAPIGetByZip, geoAPIGetByCity, geoAPIGetByCoords } from "../services/geoAPI";
 import { FaSearch } from "react-icons/fa";
 import Select from "react-select";
 import AsyncSelect from "react-select/async";
 import { countryCodes } from "../data/countries";
 
+const initialState = {
+  countryCode: "",
+  zip: "",
+  lat: "",
+  lon: "",
+  limit: 5
+};
+
 const SearchBar = ({ onSubmit }) => {
   const [searchType, setSearchType] = useState("city");
-  const [countryCode, setCountryCode] = useState("");
-
-  const handleCountryChange = (selectedOption) => {
-    setCountryCode(selectedOption.value);
-  };
-
-  const handleZipChange = (selectedOption) => {
-    onSubmit(selectedOption.value);
-  };
-
-  const loadOptionsZip = (searchValue, callback) => {
-    return geoAPIGetByZip(countryCode, searchValue, callback);
-  };
-
-  const handleCityChange = (selectedOption) => {
-    onSubmit(selectedOption.value);
-  };
-
-  const loadOptionsCity = (searchValue, callback) => {
-    return geoAPIGetByCity(countryCode, searchValue, callback);
-  };
+  const [searchInputs, setSearchInputs] = useState(initialState);
 
   const handleSearchType = (e) => {
     setSearchType(e.target.value);
-    setCountryCode("");
+    setSearchInputs(initialState)
+  };
+
+  const loadOptionsCity = (searchValue, callback) => {
+    return geoAPIGetByCity(searchValue, callback);
+  };
+
+  const handleSubmitCity = (selectedOption) => {
+    onSubmit(selectedOption.value);
+  };
+
+  const handleCountryChange = (selectedOption) => {
+    setSearchInputs({
+      ...searchInputs,
+      countryCode: selectedOption.value});
+  };
+
+  const handleSubmitZip = (event) => {
+    event.preventDefault();
+    geoAPIGetByZip(searchInputs, onSubmit);
+  };
+
+  const handleSubmitCoord = (event) => {
+    event.preventDefault();
+    geoAPIGetByCoords(searchInputs, onSubmit);
+  };
+
+  const handleInputChange = (event) => {
+    event.preventDefault();
+    setSearchInputs({
+      ...searchInputs,
+      [event.target.name]: event.target.value
+    });
   };
 
   return (
@@ -48,28 +68,28 @@ const SearchBar = ({ onSubmit }) => {
           <input type="radio" name="search_type" value="zip" />
           <label htmlFor="html">&nbsp; Search by Zip</label>
         </div>
+        <div>
+          <input type="radio" name="search_type" value="coord" />
+          <label htmlFor="html">&nbsp; Search by Coordinates</label>
+        </div>
       </div>
       <div className="flex flex-row justify-center w-full">
         {searchType === "city" && (
           <form className="flex justify-between bg-white rounded-lg w-full">
-            <Select
-              className="font-light w-full shadow-xl bg-transparent h-full p-4 text-black"
-              options={countryCodes}
-              onChange={handleCountryChange}
-              placeholder="Country"
-              noOptionsMessage={() => "No results"}
-            />
             <AsyncSelect
               className="font-light w-full shadow-xl bg-transparent h-full p-4 text-black"
               loadOptions={loadOptionsCity}
-              onChange={handleCityChange}
+              onChange={handleSubmitCity}
               placeholder="City, Country code"
               noOptionsMessage={() => "No results"}
             />
           </form>
         )}
         {searchType === "zip" && (
-          <form className="flex justify-between bg-white rounded-lg w-full">
+          <form 
+            onSubmit={handleSubmitZip}
+            className="flex justify-between bg-white rounded-lg w-full"
+          >
             <Select
               className="font-light w-full shadow-xl bg-transparent h-full p-4 text-black"
               options={countryCodes}
@@ -77,14 +97,44 @@ const SearchBar = ({ onSubmit }) => {
               placeholder="Country"
               noOptionsMessage={() => "No results"}
             />
-            <AsyncSelect
+            <input
+              onChange={handleInputChange}
               className="font-light w-full shadow-xl bg-transparent h-full p-4 text-black"
-              loadOptions={loadOptionsZip}
-              onChange={handleZipChange}
-              placeholder="Zip code"
-              noOptionsMessage={() => "No results"}
+              name="zip"
+              type="text"
+              placeholder="Zip Code"
+              value={searchInputs.zip}
             />
+            <button onClick={handleSubmitZip} className="p-4">
+              <FaSearch size={20} />
+            </button>
           </form>
+        )}
+        {searchType === "coord" && (
+          <form
+          onSubmit={handleSubmitCoord}
+          className="flex justify-between bg-white rounded-lg w-full gap-10"
+          > 
+            <input
+              onChange={handleInputChange}
+              className="font-light w-full shadow-xl bg-transparent h-full p-4 text-black"
+              name="lat"
+              type="text"
+              placeholder="Latitude"
+              value={searchInputs.lat}
+            />
+            <input
+              onChange={handleInputChange}
+              className="font-light w-full shadow-xl bg-transparent h-full p-4 text-black"
+              name="lon"
+              type="text"
+              placeholder="Longitude"
+              value={searchInputs.lon}
+            />
+          <button onClick={handleSubmitCoord} className="p-4">
+            <FaSearch size={20} />
+          </button>
+        </form>
         )}
       </div>
     </div>
