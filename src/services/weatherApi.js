@@ -1,14 +1,5 @@
 import axios from "axios";
 
-// Current weather API call
-// https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
-// 5 day / 3 hour API call
-// https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}
-// Hourly API call
-// https://pro.openweathermap.org/data/2.5/forecast/hourly?lat={lat}&lon={lon}&appid={API key}
-// 16 day forecast with daily average parameters
-// https://api.openweathermap.org/data/2.5/forecast/daily?lat={lat}&lon={lon}&cnt={cnt}&appid={API key}
-
 const API_KEY = '1e3039792caea495f5c730bd5144ded6';
 const BASE_URL= `https://api.openweathermap.org/data/2.5`;
 const PRO_URL = 'https://pro.openweathermap.org/data/2.5';
@@ -76,9 +67,6 @@ const getUrl = async(searchParams) => {
                 }
             }),
         ]);
-        console.log("current", current.data);
-        console.log("hourly", hourly.data);
-        console.log("daily", daily.data);
         let formattedData = formatApiResponse(current.data, searchParams);
         return {
             current:formattedData, 
