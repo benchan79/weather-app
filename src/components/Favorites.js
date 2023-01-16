@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from './Favorites.module.css'
 import { FaStar } from "react-icons/fa";
-import { geoAPIGetByCoords } from "../services/geoAPI";
+// import { geoAPIGetByCoords } from "../services/geoAPI";
 
 function FavoritesMenu({ onSelect, selectedLocation }) {
 
@@ -10,11 +10,12 @@ function FavoritesMenu({ onSelect, selectedLocation }) {
   }
 
   const handleClick = (loc) => {   
-    const searchParams = {
-      ...loc,
-      limit:5,
-    }
-    geoAPIGetByCoords(searchParams,onSelect);
+    // const searchParams = {
+    //   ...loc,
+    //   limit:5,
+    // }
+    // geoAPIGetByCoords(searchParams,onSelect);
+    onSelect(loc);
   }
 
   const [locArray, setlocArray] = useState([]);
