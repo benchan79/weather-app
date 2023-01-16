@@ -2,10 +2,11 @@ import { PersonPlus } from 'react-bootstrap-icons';
 import { FaArrowUp, FaArrowDown, FaThermometer, FaWind, FaWater } from 'react-icons/fa';
 import { FaSun, FaCloudRain, FaCloud, FaRegSnowflake, FaThunderstorm } from 'react-icons/fa';
 import UnitsSelector from './UnitsSelector';
-import {useState} from 'react'
+import { useContext } from 'react'
+import WeatherContext from "../contexts/WeatherContext";
 
-function CurrentDisplay({ weather, searchParam,  getSearchData}) {
-    const [isMetric, setIsMetric]  = useState(true)  
+function CurrentDisplay({ weather, searchParam,  getSearchData}) {  
+    const ctx = useContext(WeatherContext);
   
     return (
         <>
@@ -23,7 +24,8 @@ function CurrentDisplay({ weather, searchParam,  getSearchData}) {
                                 <p className='pt-5 font-light text-center text-9xl whitespace-nowrap flex flex-row'>
                                     {(weather.temp).toFixed(1)}
                                     
-                                    <UnitsSelector searchParam={searchParam} getSearchData={getSearchData} setIsMetric={setIsMetric}/>
+                                    <UnitsSelector searchParam={searchParam} getSearchData={getSearchData} />
+
                                 </p>
                             </div>
                         </div>
@@ -31,20 +33,20 @@ function CurrentDisplay({ weather, searchParam,  getSearchData}) {
                             <div className='flex flex-row'>
                                 <div className='flex items-center gap-x-2 mr-4'>
                                     <FaArrowUp />
-                                    <p className='font-light whitespace-nowrap'>High: {(weather.temp_max).toFixed(1)} {isMetric ? '°C' : '°F'}</p>
+                                    <p className='font-light whitespace-nowrap'>High: {(weather.temp_max).toFixed(1)} {ctx.isMetric ? '°C' : '°F'}</p>
                                 </div>
                                 <div className='flex items-center gap-x-2'>
                                     <FaArrowDown />
-                                    <p className='font-light whitespace-nowrap'>Low: {(weather.temp_min).toFixed(1)} { isMetric ? '°C' : '°F'}</p>
+                                    <p className='font-light whitespace-nowrap'>Low: {(weather.temp_min).toFixed(1)} {ctx.isMetric ? '°C' : '°F'}</p>
                                 </div>
                             </div>
                             <div className='flex items-center gap-x-2'>
                                 <FaThermometer />
-                                <p className='font-light whitespace-nowrap'>Feels like {(weather.feels_like).toFixed(1)} {isMetric ? '°C' : '°F'}</p>
+                                <p className='font-light whitespace-nowrap'>Feels like {(weather.feels_like).toFixed(1)} {ctx.isMetric ? '°C' : '°F'}</p>
                             </div>
                             <div className='flex items-center gap-x-2'>
                                 <FaWind />
-                                <p className='font-light whitespace-nowrap'>Wind {(weather.speed).toFixed(1)} {isMetric ? 'm/s' : 'ft/s'}</p>
+                                <p className='font-light whitespace-nowrap'>Wind {(weather.speed).toFixed(1)} {ctx.isMetric ? 'm/s' : 'ft/s'}</p>
                             </div>
                             <div className='flex items-center gap-x-2'>
                                 <FaWater />
