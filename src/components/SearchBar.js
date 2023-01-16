@@ -5,6 +5,7 @@ import Select from "react-select";
 import AsyncSelect from "react-select/async";
 import { countryCodes } from "../data/countries";
 import WeatherContext from "../contexts/WeatherContext";
+import Conditions from "./Conditions";
 
 const initialState = {
   countryCode: "",
@@ -31,6 +32,7 @@ const SearchBar = ({ onSubmit }) => {
   const handleSubmitCity = (selectedOption) => {
     const selection = selectedOption.value;
     onSubmit({...selection, units: ctx.isMetric ? 'metric' : 'imperial'});
+    ctx.setError(false)
   };
 
   const handleCountryChange = (selectedOption) => {
@@ -41,12 +43,18 @@ const SearchBar = ({ onSubmit }) => {
 
   const handleSubmitZip = (event) => {
     event.preventDefault();
-    geoAPIGetByZip(searchInputs, onSubmit, ctx.isMetric);
+    if (!searchInputs.zip || !searchInputs.countryCode) {
+      return ctx.setError(true);
+    }
+    geoAPIGetByZip(searchInputs, onSubmit, ctx.isMetric, ctx.setError, ctx.setLoading);
   };
 
   const handleSubmitCoord = (event) => {
     event.preventDefault();
-    geoAPIGetByCoords(searchInputs, onSubmit, ctx.isMetric);
+    if (!searchInputs.lat || !searchInputs.lon) {
+      return ctx.setError(true);
+    }
+    geoAPIGetByCoords(searchInputs, onSubmit, ctx.isMetric, ctx.setError, ctx.setLoading);
   };
 
   const handleInputChange = (event) => {

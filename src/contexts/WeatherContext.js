@@ -4,6 +4,8 @@ const WeatherContext = createContext();
 
 export function WeatherProvider({ children }) {
   const [isMetric, setIsMetric] = useState(true);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleChangeUnits = (selectedUnits) => {
     setIsMetric(selectedUnits === 'metric' ? true:false)
@@ -11,6 +13,10 @@ export function WeatherProvider({ children }) {
 
   const context = {
     isMetric: isMetric,
+    error: error,
+    loading: loading,
+    setError: setError,
+    setLoading: setLoading,
     handleChangeUnits: handleChangeUnits,
   }
 

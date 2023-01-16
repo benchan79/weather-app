@@ -20,7 +20,7 @@ function UserLocDisplay({ onClick }) {
       console.log("Geolocation unsupported by browser");
       return;
     }
-
+    ctx.setLoading(true);
     navigator.geolocation.getCurrentPosition(
       async position => {
         try {
@@ -29,7 +29,7 @@ function UserLocDisplay({ onClick }) {
             lat: position.coords.latitude,
             long: position.coords.longitude,
           }
-          geoAPIGetByCoords(coords, onClick, ctx.isMetric);
+          geoAPIGetByCoords(coords, onClick, ctx.isMetric, ctx.setError, ctx.setLoading);
         }
         catch (error) {
           console.error(error);
