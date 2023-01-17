@@ -27,7 +27,7 @@ function UserLocDisplay({ onClick }) {
           const coords = {
             ...userLocation,
             lat: position.coords.latitude,
-            long: position.coords.longitude,
+            lon: position.coords.longitude,
           }
           geoAPIGetByCoords(coords, onClick, ctx.isMetric, ctx.setError, ctx.setLoading);
         }
