@@ -19,14 +19,14 @@ function CurrentDisplay({ weather, searchParam,  getSearchData}) {
                     <div className='flex flex-col md:flex-row items-center justify-between gap-x-10 sm:pb-4'>
                         <div className='flex flex-col sm:flex-row align-center items-center py-10'>
                             {/* <FaSun size={100} /> */}
-                            <img src={`http://openweathermap.org/img/w/${weather.icon}.png`} />
+                            <img src={`http://openweathermap.org/img/w/${weather.icon}.png`} alt=""/>
                             <div className='ml-5'>
-                                <p className='pt-5 font-light text-center text-9xl whitespace-nowrap flex flex-row'>
+                                <div className='pt-5 font-light text-center text-9xl whitespace-nowrap flex flex-row'>
                                     {(weather.temp).toFixed(1)}
                                     
                                     <UnitsSelector searchParam={searchParam} getSearchData={getSearchData} />
 
-                                </p>
+                                </div>
                             </div>
                         </div>
                         <div className='flex flex-col sm:flex-row sm:flex-col sm:pb-4 gap-y-3'>

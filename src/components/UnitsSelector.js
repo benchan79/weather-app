@@ -1,13 +1,13 @@
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import WeatherContext from "../contexts/WeatherContext";
 
 function UnitsSelector({ searchParam, getSearchData, setIsMetric }) {
 
-  const [activeUnits, setActiveUnits] = useState('metric');
+  // const [activeUnits, setActiveUnits] = useState('metric');
   const ctx = useContext(WeatherContext);
 
   const handleClick = (selectedUnits) => {
-    setActiveUnits(selectedUnits)
+    // setActiveUnits(selectedUnits)
     ctx.handleChangeUnits(selectedUnits);
     getSearchData({ ...searchParam, units: selectedUnits})
   }

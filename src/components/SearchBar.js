@@ -5,7 +5,6 @@ import Select from "react-select";
 import AsyncSelect from "react-select/async";
 import { countryCodes } from "../data/countries";
 import WeatherContext from "../contexts/WeatherContext";
-import Conditions from "./Conditions";
 
 const initialState = {
   countryCode: "",
