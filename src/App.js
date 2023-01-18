@@ -12,6 +12,7 @@ import { X } from 'react-bootstrap-icons';
 import UserLocDisplay from './components/userLocDisplay';
 import WeatherContext from './contexts/WeatherContext';
 import Conditions from './components/Conditions';
+import MapDisplay from './components/MapDisplay';
 
 function App() {
 
@@ -60,8 +61,6 @@ function App() {
 
         </div>
 
-
-
         {/* below components only show when search returns weather data */}
         {weather && !ctx.error && !ctx.loading ? (
           <div>
@@ -71,6 +70,9 @@ function App() {
             <div className='mx-auto max-w-screen-md h-fit shadow-xl p-10 bg-white bg-opacity-75 mt-10'>
               <HourlyDisplay weather={hourlyFcast} />
               <WeeklyDisplay weather={dailyFcast}/>
+            </div>
+            <div className='mx-auto max-w-screen-md h-fit shadow-xl p-10 bg-white bg-opacity-75 mt-10'>
+              <MapDisplay searchParam={searchParam} />
             </div>
           </div>
         ) : (
