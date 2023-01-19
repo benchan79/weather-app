@@ -1,4 +1,4 @@
-import {FaSun, FaCloudRain, FaCloud, FaRegSnowflake,IoMdThunderstorm, FaSearch} from 'react-icons/fa';
+// import {FaSun, FaCloudRain, FaCloud, FaRegSnowflake,IoMdThunderstorm, FaSearch} from 'react-icons/fa';
 import { useState, useContext} from 'react'
 import WeatherContext from "../contexts/WeatherContext";
 
