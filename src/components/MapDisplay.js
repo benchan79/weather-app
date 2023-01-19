@@ -1,4 +1,4 @@
-const GOOGLE_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+const GOOGLE_API_KEY = "AIzaSyBSz9oqHd19uT1u2TLAK5oU0niFKN6Rgw8";
 
 const BASE_URL = `https://www.google.com/maps/embed/v1`;
 
