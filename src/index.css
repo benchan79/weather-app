@@ -9,3 +9,15 @@
     font-family: 'Poppins', sans-serif;
   }
 }
+
+.search {
+  display: flex;
+  justify-content: space-evenly;
+  position: relative;
+  /* top: 1rem; */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 800px;
+  z-index: 10;
+}

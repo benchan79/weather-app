@@ -9,6 +9,7 @@ export function WeatherProvider({ children }) {
 
   const handleChangeUnits = (selectedUnits) => {
     setIsMetric(selectedUnits === 'metric' ? true:false)
+    // console.log(isMetric ? 'metric':'imperial')
   }
 
   const context = {

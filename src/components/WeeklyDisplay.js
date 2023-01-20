@@ -1,4 +1,4 @@
-import { FaSun, FaCloudRain, FaCloud, FaRegSnowflake } from "react-icons/fa";
+// import { FaSun, FaCloudRain, FaCloud, FaRegSnowflake } from "react-icons/fa";
 import { useState, useContext } from "react";
 import WeatherContext from "../contexts/WeatherContext";
 
@@ -38,6 +38,7 @@ function WeeklyForecast({ weather }) {
           {weather.list.slice(daysCount, daysCount + 5).map((day) => (
             <div className="flex flex-col items-center" key={day.dt}>
               <p className="font-light text-sm">{timeConverter(day.dt)}</p>
+              <p className="font-light text-sm">{day.weather[0].description}</p>
               <img src={`${icon_URL}${day.weather[0].icon}@2x.png`} alt="" />
               <p>
                 {day.temp.day.toFixed(1)} {ctx.isMetric ? "°C" : "°F"}

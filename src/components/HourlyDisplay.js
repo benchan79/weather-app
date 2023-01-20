@@ -1,4 +1,4 @@
-import {FaSun, FaCloudRain, FaCloud, FaRegSnowflake,IoMdThunderstorm, FaSearch} from 'react-icons/fa';
+// import {FaSun, FaCloudRain, FaCloud, FaRegSnowflake,IoMdThunderstorm, FaSearch} from 'react-icons/fa';
 import { useState, useContext} from 'react'
 import WeatherContext from "../contexts/WeatherContext";
 
@@ -38,8 +38,10 @@ function HourlyDisplay({ weather }) {
           {weather.list.slice(hoursCount, hoursCount + 5).map((hour) => (
             <div className="flex flex-col items-center" key={hour.dt} >
               <p className="font-light text-sm">{timeConverter(hour.dt)}</p>
+              <p className="font-light text-sm">{hour.weather[0].description}</p>
               <img src={`${icon_URL}${hour.weather[0].icon}@2x.png`} alt="" />
               <p>{hour.main.temp.toFixed(1)} {ctx.isMetric ? '°C' : '°F'}</p>
+              
             </div>
           ))}
           {hoursCount <= 10 ? (

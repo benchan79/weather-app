@@ -8,7 +8,6 @@ const baseAPI = axios.create({ baseURL: BASE_URL });
 const proAPI = axios.create({ baseURL: PRO_URL });
 
 const formatApiResponse = (data, searchParams) => {
-    console.log (data)
     let {
         coord: {
             lat,
@@ -31,9 +30,10 @@ const formatApiResponse = (data, searchParams) => {
             }
         }
     } = data;
-    const state = searchParams.state ? ` ${searchParams.state},` : "";
-    const zip = searchParams.zip ? ` (${searchParams.zip})` : "";
-    const name = `${searchParams.name},${state} ${searchParams.country}${zip}`;
+    const state = searchParams.state ? `, ${searchParams.state}` : "";
+    const zip = searchParams.zip ? `, (${searchParams.zip})` : "";
+    const country = searchParams.country ? `, ${searchParams.country}` : "";
+    const name = `${searchParams.name}${state}${country}${zip}`;
     return {name, lat, lon, feels_like, temp, temp_min, temp_max, humidity, speed, description, icon};
 }
 
@@ -68,6 +68,7 @@ const getUrl = async(searchParams) => {
             }),
         ]);
         let formattedData = formatApiResponse(current.data, searchParams);
+        console.log(daily)
         return {
             current:formattedData, 
             hourly: hourly.data,
