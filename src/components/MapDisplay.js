@@ -3,7 +3,7 @@ import { GoogleMap, useLoadScript, MarkerF } from '@react-google-maps/api';
 import WeatherContext from "../contexts/WeatherContext";
 // import { mapStyles } from "./mapStyles";
 
-const GOOGLE_MAPS_API_KEY = "AIzaSyBSz9oqHd19uT1u2TLAK5oU0niFKN6Rgw8"
+const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY
 
 const mapContainerStyle = {
   height: "100vh",

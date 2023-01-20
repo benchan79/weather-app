@@ -10,7 +10,6 @@ function UnitsSelector({ searchParam, getSearchData }) {
     // setActiveUnits(selectedUnits)
     ctx.handleChangeUnits(selectedUnits);
     getSearchData({ ...searchParam, units: selectedUnits})
-    // console.log(ctx.isMetric ? 'metric':'imperial')
   }
 
   return (

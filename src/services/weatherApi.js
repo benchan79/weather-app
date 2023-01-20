@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_KEY = '1e3039792caea495f5c730bd5144ded6';
+const API_KEY = process.env.REACT_APP_OWM_API_KEY;
 const BASE_URL= `https://api.openweathermap.org/data/2.5`;
 const PRO_URL = 'https://pro.openweathermap.org/data/2.5';
 
@@ -68,7 +68,6 @@ const getUrl = async(searchParams) => {
             }),
         ]);
         let formattedData = formatApiResponse(current.data, searchParams);
-        console.log(daily)
         return {
             current:formattedData, 
             hourly: hourly.data,
