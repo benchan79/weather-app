@@ -1,9 +1,9 @@
 import React, { useState, useCallback, useEffect, useContext } from "react";
-import { GoogleMap, useLoadScript, MarkerF } from '@react-google-maps/api';
+import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
 import WeatherContext from "../contexts/WeatherContext";
 // import { mapStyles } from "./mapStyles";
 
-const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY
+const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
 const mapContainerStyle = {
   height: "100vh",
@@ -16,22 +16,20 @@ const options = {
   zoomControl: true,
 };
 
-function MapDisplay ({ searchParam, onSubmit }) {
-  const [libraries] = useState(['places'])
-  const {isLoaded, loadError} = useLoadScript({
+function MapDisplay({ searchParam, onSubmit }) {
+  const [libraries] = useState(["places"]);
+  const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: GOOGLE_MAPS_API_KEY,
     libraries,
-  })
+  });
   const ctx = useContext(WeatherContext);
   const [mapCoords, setMapCoords] = useState("");
   const [weatherMapType, setWeatherMapType] = useState("");
-  const [map, setMap] = useState(null)
+  const [map, setMap] = useState(null);
   // const center = useMemo(() => (mapCoords), []);
   // const mapRef = useRef();
   // const onMapLoad = useCallback((map) => {
   //   mapRef.current = map;
-  //   mapRef.current.overlayMapTypes.pop();
-  //   mapRef.current.overlayMapTypes.insertAt(0, weatherOverlay());
   // }, []);
 
   const weatherOverlay = () => {
@@ -86,13 +84,16 @@ function MapDisplay ({ searchParam, onSubmit }) {
     setMap(null);
   }, []);
 
-  const onMapClick = useCallback((event) => {
-    const latlng = {
-      lat: event.latLng.lat(),
-      lng: event.latLng.lng(),
-    }
-    geocoderlatlng(latlng, onSubmit, ctx.isMetric)
-  }, [ctx.isMetric, onSubmit])
+  const onMapClick = useCallback(
+    (event) => {
+      const latlng = {
+        lat: event.latLng.lat(),
+        lng: event.latLng.lng(),
+      };
+      geocoderlatlng(latlng, onSubmit, ctx.isMetric);
+    },
+    [ctx.isMetric, onSubmit]
+  );
 
   if (loadError) return "Error loading maps";
   if (!isLoaded) return <div>Loading...</div>;
@@ -100,48 +101,55 @@ function MapDisplay ({ searchParam, onSubmit }) {
   return (
     <>
       <div className="search">
-        <button onClick={() => setWeatherMapType("temp_new")}>Temperature</button>
-        <button onClick={() => setWeatherMapType("wind_new")}>Wind Speed</button>
+        <button onClick={() => setWeatherMapType("temp_new")}>
+          Temperature
+        </button>
+        <button onClick={() => setWeatherMapType("wind_new")}>
+          Wind Speed
+        </button>
         <button onClick={() => setWeatherMapType("clouds_new")}>Clouds</button>
-        <button onClick={() => setWeatherMapType("precipitation_new")}>Precipitation</button>
-        <button onClick={() => setWeatherMapType("pressure_new")}>Sea Level Pressure</button>
+        <button onClick={() => setWeatherMapType("precipitation_new")}>
+          Precipitation
+        </button>
+        <button onClick={() => setWeatherMapType("pressure_new")}>
+          Sea Level Pressure
+        </button>
         <button onClick={() => map.overlayMapTypes.pop()}>Clear</button>
       </div>
 
       <GoogleMap
-      id="map"
-      options={options}
-      mapContainerStyle={mapContainerStyle}
-      center={mapCoords}
-      zoom={10}
-      onClick={onMapClick}
-      onLoad={onMapLoad}
-      onUnmount={onUnmount}
+        id="map"
+        options={options}
+        mapContainerStyle={mapContainerStyle}
+        center={mapCoords}
+        zoom={10}
+        onClick={onMapClick}
+        onLoad={onMapLoad}
+        onUnmount={onUnmount}
       >
-        <MarkerF position={mapCoords}/>
+        <MarkerF position={mapCoords} />
       </GoogleMap>
     </>
-  )
+  );
 }
 
 export default MapDisplay;
 
-export function geocoderlatlng (latlng, onSubmit, isMetric) {
+export function geocoderlatlng(latlng, onSubmit, isMetric) {
   const geocoder = new window.google.maps.Geocoder();
   geocoder
-  .geocode({ location: latlng })
-  .then((response) => {
-    if (response.results[0]) {
-      // console.log(response.results[0].address_components)
-      onSubmit({
-        name: response.results[0].formatted_address,
-        lat: latlng.lat,
-        lon: latlng.lng,
-        units: isMetric ? 'metric':'imperial',
-      })
-    } else {
-      window.alert("No results found");
-    }
-  })
-  .catch((e) => window.alert("Geocoder failed due to: " + e));
+    .geocode({ location: latlng })
+    .then((response) => {
+      if (response.results[0]) {
+        onSubmit({
+          name: response.results[0].formatted_address,
+          lat: latlng.lat,
+          lon: latlng.lng,
+          units: isMetric ? "metric" : "imperial",
+        });
+      } else {
+        window.alert("No results found");
+      }
+    })
+    .catch((e) => window.alert("Geocoder failed due to: " + e));
 }

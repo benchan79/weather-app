@@ -21,7 +21,13 @@ function UserLocDisplay({ onClick }) {
             lat: position.coords.latitude,
             lon: position.coords.longitude,
           };
-          googleReverseGeocoding(coords, onClick, ctx.isMetric,ctx.setError,ctx.setLoading)
+          googleReverseGeocoding(
+            coords,
+            onClick,
+            ctx.isMetric,
+            ctx.setError,
+            ctx.setLoading
+          );
         } catch (error) {
           console.error(error);
         }

@@ -8,9 +8,8 @@ export function WeatherProvider({ children }) {
   const [loading, setLoading] = useState(false);
 
   const handleChangeUnits = (selectedUnits) => {
-    setIsMetric(selectedUnits === 'metric' ? true:false)
-    // console.log(isMetric ? 'metric':'imperial')
-  }
+    setIsMetric(selectedUnits === "metric" ? true : false);
+  };
 
   const context = {
     isMetric: isMetric,
@@ -19,13 +18,13 @@ export function WeatherProvider({ children }) {
     setError: setError,
     setLoading: setLoading,
     handleChangeUnits: handleChangeUnits,
-  }
+  };
 
   return (
     <WeatherContext.Provider value={context}>
       {children}
     </WeatherContext.Provider>
-  )
+  );
 }
 
 export default WeatherContext;

@@ -1,17 +1,18 @@
 import { useState, useContext } from "react";
-import { geoAPIGetByZip, geoAPIGetByCity, geoAPIGetByCoords } from "../services/geoAPI";
+import { geoAPIGetByZip, geoAPIGetByCity } from "../services/geoAPI";
 import { FaSearch } from "react-icons/fa";
 import Select from "react-select";
 import AsyncSelect from "react-select/async";
 import { countryCodes } from "../data/countries";
 import WeatherContext from "../contexts/WeatherContext";
+import { googleReverseGeocoding } from "../services/geoAPI";
 
 const initialState = {
   countryCode: "",
   zip: "",
   lat: "",
   lon: "",
-  limit: 5
+  limit: 5,
 };
 
 const SearchBar = ({ onSubmit }) => {
@@ -21,7 +22,7 @@ const SearchBar = ({ onSubmit }) => {
 
   const handleSearchType = (e) => {
     setSearchType(e.target.value);
-    setSearchInputs(initialState)
+    setSearchInputs(initialState);
   };
 
   const loadOptionsCity = (searchValue, callback) => {
@@ -30,14 +31,15 @@ const SearchBar = ({ onSubmit }) => {
 
   const handleSubmitCity = (selectedOption) => {
     const selection = selectedOption.value;
-    onSubmit({...selection, units: ctx.isMetric ? 'metric' : 'imperial'});
-    ctx.setError(false)
+    onSubmit({ ...selection, units: ctx.isMetric ? "metric" : "imperial" });
+    ctx.setError(false);
   };
 
   const handleCountryChange = (selectedOption) => {
     setSearchInputs({
       ...searchInputs,
-      countryCode: selectedOption.value});
+      countryCode: selectedOption.value,
+    });
   };
 
   const handleSubmitZip = (event) => {
@@ -45,7 +47,13 @@ const SearchBar = ({ onSubmit }) => {
     if (!searchInputs.zip || !searchInputs.countryCode) {
       return ctx.setError(true);
     }
-    geoAPIGetByZip(searchInputs, onSubmit, ctx.isMetric, ctx.setError, ctx.setLoading);
+    geoAPIGetByZip(
+      searchInputs,
+      onSubmit,
+      ctx.isMetric,
+      ctx.setError,
+      ctx.setLoading
+    );
   };
 
   const handleSubmitCoord = (event) => {
@@ -53,14 +61,20 @@ const SearchBar = ({ onSubmit }) => {
     if (!searchInputs.lat || !searchInputs.lon) {
       return ctx.setError(true);
     }
-    geoAPIGetByCoords(searchInputs, onSubmit, ctx.isMetric, ctx.setError, ctx.setLoading);
+    googleReverseGeocoding(
+      searchInputs,
+      onSubmit,
+      ctx.isMetric,
+      ctx.setError,
+      ctx.setLoading
+    );
   };
 
   const handleInputChange = (event) => {
     event.preventDefault();
     setSearchInputs({
       ...searchInputs,
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   };
 
@@ -96,7 +110,7 @@ const SearchBar = ({ onSubmit }) => {
           </form>
         )}
         {searchType === "zip" && (
-          <form 
+          <form
             onSubmit={handleSubmitZip}
             className="flex justify-between bg-white rounded-lg w-full"
           >
@@ -122,9 +136,9 @@ const SearchBar = ({ onSubmit }) => {
         )}
         {searchType === "coord" && (
           <form
-          onSubmit={handleSubmitCoord}
-          className="flex justify-between bg-white rounded-lg w-full gap-10"
-          > 
+            onSubmit={handleSubmitCoord}
+            className="flex justify-between bg-white rounded-lg w-full gap-10"
+          >
             <input
               onChange={handleInputChange}
               className="font-light w-full shadow-xl bg-transparent h-full p-4 text-black"
@@ -141,10 +155,10 @@ const SearchBar = ({ onSubmit }) => {
               placeholder="Longitude"
               value={searchInputs.lon}
             />
-          <button onClick={handleSubmitCoord} className="p-4">
-            <FaSearch size={20} />
-          </button>
-        </form>
+            <button onClick={handleSubmitCoord} className="p-4">
+              <FaSearch size={20} />
+            </button>
+          </form>
         )}
       </div>
     </div>
