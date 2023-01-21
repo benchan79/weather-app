@@ -54,12 +54,8 @@ function App() {
 
         {weather && !ctx.error && !ctx.loading ? (
           <div>
-            <div className="mx-auto max-w-screen-md h-fit shadow-xl p-10 bg-white bg-opacity-75 mt-10">
-              <CurrentDisplay
-                weather={weather}
-                searchParam={searchParam}
-                getSearchData={getSearchData}
-              />
+            <div className='mx-auto max-w-screen-md h-fit shadow-xl p-10 bg-white bg-opacity-75 mt-10'>
+              <CurrentDisplay weather={weather} searchParam={searchParam} getSearchData={getSearchData} />
             </div>
             <div className="mx-auto max-w-screen-md h-fit shadow-xl p-10 bg-white bg-opacity-75 mt-10">
               <HourlyDisplay weather={hourlyFcast} />
