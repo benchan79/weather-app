@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import { useContext } from "react";
 import WeatherContext from "../contexts/WeatherContext";
 
 function UnitsSelector({ searchParam, getSearchData }) {
