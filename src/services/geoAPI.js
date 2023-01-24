@@ -1,4 +1,4 @@
-import axios from "axios";
+// import axios from "axios";
 
 // const API_KEY = process.env.REACT_APP_OWM_API_KEY;
 // const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
@@ -90,7 +90,7 @@ export const googleReverseGeocoding = async (
     // );
     const response = await fetch(url).then((res) => res.json());
     const name = response.results[0].formatted_address;
-    console.log(name);
+    // console.log(name);
     if (!response.results[0]) {
       throw new Error();
     }

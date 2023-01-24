@@ -1,9 +1,9 @@
 import React, { useState, useCallback, useEffect, useContext } from "react";
-import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
+import { GoogleMap, MarkerF, useJsApiLoader } from "@react-google-maps/api";
 import WeatherContext from "../contexts/WeatherContext";
 // import { mapStyles } from "./mapStyles";
 
-const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+// const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
 const mapContainerStyle = {
   height: "100vh",
@@ -16,22 +16,18 @@ const options = {
   zoomControl: true,
 };
 
-function MapDisplay({ searchParam, onSubmit }) {
+function MapDisplay({ searchParam, onSubmit, apiKey }) {
+ 
   const [libraries] = useState(["places"]);
-  const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
+  const { isLoaded, loadError } = useJsApiLoader({
+    googleMapsApiKey: apiKey,
     libraries,
   });
   const ctx = useContext(WeatherContext);
   const [mapCoords, setMapCoords] = useState("");
   const [weatherMapType, setWeatherMapType] = useState("");
   const [map, setMap] = useState(null);
-  // const center = useMemo(() => (mapCoords), []);
-  // const mapRef = useRef();
-  // const onMapLoad = useCallback((map) => {
-  //   mapRef.current = map;
-  // }, []);
-
+  
   const weatherOverlay = () => {
     return (
       weatherMapType &&

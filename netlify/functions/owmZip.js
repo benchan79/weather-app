@@ -13,7 +13,7 @@ exports.handler = async function (event, context) {
     const response = await owmAPI.get(
       `zip?zip=${zip},${countryCode}&appid=${process.env.OWM_API_KEY}`
     );
-    console.log(response.data)
+    // console.log(response.data)
 
     return {
       statusCode: 200,
