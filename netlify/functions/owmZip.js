@@ -8,12 +8,12 @@ exports.handler = async function (event, context) {
   // console.log(event);
   // console.log(context);
   try {
-    const { city, countryCode } = event.queryStringParameters;
+    const { zip, countryCode } = event.queryStringParameters;
     // console.log(cityName)
     const response = await owmAPI.get(
-      `direct?q=${city},${countryCode}&limit=5&appid=${process.env.OWM_API_KEY}`
+      `zip?zip=${zip},${countryCode}&appid=${process.env.OWM_API_KEY}`
     );
-    // console.log(response.data[0])
+    console.log(response.data)
 
     return {
       statusCode: 200,

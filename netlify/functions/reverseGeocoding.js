@@ -1,27 +1,21 @@
 const axios = require("axios");
 
-const BASE_URL = `https://api.openweathermap.org/geo/1.0/`;
-const owmAPI = axios.create({ baseURL: BASE_URL });
-// https://api.openweathermap.org/geo/1.0/direct?q=London&limit=5&appid={API_key}
+const BASE_URL = `https://maps.googleapis.com/maps/api/`;
+const googleAPI = axios.create({ baseURL: BASE_URL });
+// https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key=YOUR_API_KEY
 
 exports.handler = async function (event, context) {
   // console.log(event);
   // console.log(context);
   try {
-    const { city, countryCode } = event.queryStringParameters;
-    // console.log(cityName)
-    const response = await owmAPI.get(
-      `direct?q=${city},${countryCode}&limit=5&appid=${process.env.OWM_API_KEY}`
+    const { lat, lon } = event.queryStringParameters;
+    // console.log(lat, lon)
+    const response = await googleAPI.get(
+      `geocode/json?latlng=${lat},${lon}&key=${process.env.GOOGLE_MAPS_API_KEY}`
     );
-    // console.log(response.data[0])
-
+    // console.log(response.data)
     return {
       statusCode: 200,
-      // body: JSON.stringify({ 
-      //   name: response.data[0].name,
-      //   lat: response.data[0].lat,
-      //   lon: response.data[0].lon, 
-      // }),
       body: JSON.stringify(response.data),
     };
   } catch (err) {
