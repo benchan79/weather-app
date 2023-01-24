@@ -19,6 +19,8 @@ function App() {
   const [hourlyFcast, setHourlyFcast] = useState(null);
   const [dailyFcast, setDailyFcast] = useState(null);
   const ctx = useContext(WeatherContext);
+  const [coords, setCoords] = useState("");
+  const [cityName, setCityName] = useState("");
 
   const getSearchData = (searchInputs) => {
     setSearchParam(searchInputs);
@@ -35,6 +37,28 @@ function App() {
         : null;
     fetchUrlData();
   }, [searchParam]);
+
+//==============================================================================================
+  const getCoords = async () => {
+    const limit = 5;
+    const url = `/.netlify/functions/owmCityName?cityName=${cityName}&limit=${limit}`;
+    try {
+      const response = await fetch(url).then((res) => res.json());
+      // console.log(response);
+      setCoords(response[0]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    setCityName(e.target.value);
+  };
+
+  const handleGetCoords = (e) => {
+    getCoords();
+  };
+//==============================================================================================
 
   return (
     <div className="App">
@@ -71,6 +95,30 @@ function App() {
       {weather && !ctx.error && !ctx.loading ? (
         <MapDisplay searchParam={searchParam} onSubmit={getSearchData} />
       ) : null}
+      
+      <p/>
+
+      <input
+        onChange={handleInputChange}
+        name="city"
+        type="text"
+        placeholder="city"
+        value={cityName}
+      />
+
+      <button onClick={handleGetCoords}>Get coordinates</button>
+
+      <h1>{cityName}</h1>
+      {coords && (
+        <>
+          <h1>
+            {coords.name}, {coords.country}
+          </h1>
+          <h2>
+            {coords.lat}, {coords.lon}
+          </h2>
+        </>
+      )}
     </div>
   );
 }

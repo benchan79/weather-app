@@ -63,6 +63,7 @@ function MapDisplay({ searchParam, onSubmit }) {
       map.overlayMapTypes.pop();
       map.overlayMapTypes.insertAt(0, weatherOverlay());
     }
+  // eslint-disable-next-line
   }, [weatherMapType]);
 
   useEffect(() => {
