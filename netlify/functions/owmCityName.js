@@ -17,11 +17,6 @@ exports.handler = async function (event, context) {
 
     return {
       statusCode: 200,
-      // body: JSON.stringify({ 
-      //   name: response.data[0].name,
-      //   lat: response.data[0].lat,
-      //   lon: response.data[0].lon, 
-      // }),
       body: JSON.stringify(response.data),
     };
   } catch (err) {

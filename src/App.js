@@ -20,6 +20,7 @@ function App() {
   const [dailyFcast, setDailyFcast] = useState(null);
   const ctx = useContext(WeatherContext);
   const [apiKey, setApiKey] = useState("")
+  const [owmKey, setOwmKey] = useState("");
 
   const getSearchData = (searchInputs) => {
     setSearchParam(searchInputs);
@@ -37,12 +38,12 @@ function App() {
     fetchUrlData();
   }, [searchParam]);
 
-//==============================================================================================
   useEffect(() => {
-    handleGetKey();
+    getGmapKey();
+    getOwmKey();
   }, [])
 
-  const handleGetKey = async () => {
+  const getGmapKey = async () => {
     const url = `/.netlify/functions/googleMaps`;
     try {
       const response = await fetch(url).then((res) => res.json());
@@ -51,7 +52,16 @@ function App() {
       console.log(error);
     }
   };
-//==============================================================================================
+
+  const getOwmKey = async () => {
+    const url = `/.netlify/functions/owmMap`;
+    try {
+      const response = await fetch(url).then((res) => res.json());
+      setOwmKey(response.apiKey)
+    } catch (error) {
+    console.log(error);
+    }
+  };
 
   return (
     <div className="App">
@@ -86,7 +96,7 @@ function App() {
         )}
       </div>
       {apiKey && weather && !ctx.error && !ctx.loading ? (
-        <MapDisplay searchParam={searchParam} onSubmit={getSearchData} apiKey={apiKey}/>
+        <MapDisplay searchParam={searchParam} onSubmit={getSearchData} apiKey={apiKey} owmKey={owmKey} />
       ) : null}
       <p/>
     </div>

@@ -14,9 +14,19 @@ const options = {
   // styles: mapStyles,
   disableDefaultUI: true,
   zoomControl: true,
+  minZoom: 1,
+  restriction: {
+    latLngBounds:{
+      north: 85.0, 
+      south: -85.0, 
+      west: -179.0, 
+      east: 180.0
+    },
+    strictBounds : true
+  }
 };
 
-function MapDisplay({ searchParam, onSubmit, apiKey }) {
+function MapDisplay({ searchParam, onSubmit, apiKey, owmKey }) {
  
   const [libraries] = useState(["places"]);
   const { isLoaded, loadError } = useJsApiLoader({
@@ -27,23 +37,14 @@ function MapDisplay({ searchParam, onSubmit, apiKey }) {
   const [mapCoords, setMapCoords] = useState("");
   const [weatherMapType, setWeatherMapType] = useState("");
   const [map, setMap] = useState(null);
-  
+
   const weatherOverlay = () => {
+    const BASE_URL = `https://tile.openweathermap.org/map/`;
     return (
-      weatherMapType &&
+      weatherMapType && 
       new window.google.maps.ImageMapType({
         getTileUrl: function (coord, zoom) {
-          return (
-            "https://tile.openweathermap.org/map/" +
-            weatherMapType +
-            "/" +
-            zoom +
-            "/" +
-            coord.x +
-            "/" +
-            coord.y +
-            ".png?appid=1e3039792caea495f5c730bd5144ded6"
-          );
+          return (`${BASE_URL}${weatherMapType}/${zoom}/${coord.x}/${coord.y}.png?appid=${owmKey}`);
         },
         tileSize: new window.google.maps.Size(256, 256),
         maxZoom: 15,
@@ -123,6 +124,7 @@ function MapDisplay({ searchParam, onSubmit, apiKey }) {
         onClick={onMapClick}
         onLoad={onMapLoad}
         onUnmount={onUnmount}
+        
       >
         <MarkerF position={mapCoords} />
       </GoogleMap>

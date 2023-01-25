@@ -5,8 +5,7 @@ const PRO_URL = "https://pro.openweathermap.org/data/2.5";
 const baseAPI = axios.create({ baseURL: BASE_URL });
 const proAPI = axios.create({ baseURL: PRO_URL });
 
-// https://api.openweathermap.org/geo/1.0/direct?q=London&limit=5&appid={api_key}
-//https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API_key}&units=metric
+// https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API_key}&units=metric
 
 exports.handler = async function (event, context) {
   // console.log(event);
@@ -46,11 +45,6 @@ exports.handler = async function (event, context) {
 
     return {
       statusCode: 200,
-      // body: JSON.stringify({ 
-      //   name: response.data[0].name,
-      //   lat: response.data[0].lat,
-      //   lon: response.data[0].lon, 
-      // }),
       body: JSON.stringify({
         current: current.data,
         hourly: hourly.data,
