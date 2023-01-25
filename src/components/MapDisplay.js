@@ -14,12 +14,12 @@ const options = {
   // styles: mapStyles,
   disableDefaultUI: true,
   zoomControl: true,
-  minZoom: 1,
+  minZoom: 0,
   restriction: {
     latLngBounds:{
       north: 85.0, 
       south: -85.0, 
-      west: -179.0, 
+      west: -180.0, 
       east: 180.0
     },
     strictBounds : true
@@ -39,12 +39,26 @@ function MapDisplay({ searchParam, onSubmit, apiKey, owmKey }) {
   const [map, setMap] = useState(null);
 
   const weatherOverlay = () => {
-    const BASE_URL = `https://tile.openweathermap.org/map/`;
     return (
       weatherMapType && 
       new window.google.maps.ImageMapType({
         getTileUrl: function (coord, zoom) {
-          return (`${BASE_URL}${weatherMapType}/${zoom}/${coord.x}/${coord.y}.png?appid=${owmKey}`);
+          const normalizedCoord = getNormalizedCoord(coord, zoom);
+          if (!normalizedCoord) {
+            return "";
+          }
+          return (
+            "https://tile.openweathermap.org/map/" +
+            weatherMapType +
+            "/" +
+            zoom +
+            "/" +
+            normalizedCoord.x +
+            "/" +
+            normalizedCoord.y +
+            ".png?appid=" +
+            owmKey
+          )
         },
         tileSize: new window.google.maps.Size(256, 256),
         maxZoom: 15,
@@ -151,4 +165,23 @@ export function geocoderlatlng(latlng, onSubmit, isMetric) {
       }
     })
     .catch((e) => window.alert("Geocoder failed due to: " + e));
+}
+
+function getNormalizedCoord(coord, zoom) {
+  const y = coord.y;
+  let x = coord.x;
+  // tile range in one direction range is dependent on zoom level
+  // 0 = 1 tile, 1 = 2 tiles, 2 = 4 tiles, 3 = 8 tiles, etc
+  const tileRange = 1 << zoom;
+
+  // don't repeat across y-axis (vertically)
+  if (y < 0 || y >= tileRange) {
+    return null;
+  }
+
+  // repeat across x-axis
+  if (x < 0 || x >= tileRange) {
+    x = ((x % tileRange) + tileRange) % tileRange;
+  }
+  return { x: x, y: y };
 }
