@@ -4,7 +4,7 @@ import { useState, useEffect, useContext } from "react";
 
 import SearchBar from "./components/SearchBar.js";
 import CurrentDisplay from "./components/CurrentDisplay";
-import WeeklyDisplay from "./components/WeeklyDisplay";
+import DailyDisplay from "./components/DailyDisplay";
 import HourlyDisplay from "./components/HourlyDisplay";
 import getUrl from "./services/weatherApi";
 import FavoritesMenu from "./components/Favorites";
@@ -86,7 +86,7 @@ function App() {
             </div>
             <div className="mx-auto max-w-screen-md h-fit shadow-xl p-10 bg-white bg-opacity-75 mt-10">
               <HourlyDisplay weather={hourlyFcast} />
-              <WeeklyDisplay weather={dailyFcast} />
+              <DailyDisplay weather={dailyFcast} />
             </div>
           </div>
         ) : (

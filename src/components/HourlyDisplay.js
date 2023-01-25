@@ -3,7 +3,7 @@ import { useState, useContext } from "react";
 import WeatherContext from "../contexts/WeatherContext";
 
 function HourlyDisplay({ weather }) {
-  const icon_URL = "http://openweathermap.org/img/wn/";
+  const icon_URL = "https://openweathermap.org/img/wn/";
   const ctx = useContext(WeatherContext);
   const [hoursCount, sethoursCount] = useState(0);
 

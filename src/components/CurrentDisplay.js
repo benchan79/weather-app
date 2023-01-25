@@ -26,7 +26,7 @@ function CurrentDisplay({ weather, searchParam, getSearchData }) {
             <div className="flex flex-col sm:flex-row align-center items-center py-10">
               {/* <FaSun size={100} /> */}
               <img
-                src={`http://openweathermap.org/img/w/${weather.icon}.png`}
+                src={`https://openweathermap.org/img/wn/${weather.icon}@2x.png`}
                 alt=""
               />
               <div className="ml-5">

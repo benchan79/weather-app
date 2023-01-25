@@ -2,8 +2,8 @@
 import { useState, useContext } from "react";
 import WeatherContext from "../contexts/WeatherContext";
 
-function WeeklyForecast({ weather }) {
-  const icon_URL = "http://openweathermap.org/img/wn/";
+function DailyDisplay({ weather }) {
+  const icon_URL = "https://openweathermap.org/img/wn/";
   const ctx = useContext(WeatherContext);
   const [daysCount, setDaysCount] = useState(0);
 
@@ -60,4 +60,4 @@ function WeeklyForecast({ weather }) {
   );
 }
 
-export default WeeklyForecast;
+export default DailyDisplay;
