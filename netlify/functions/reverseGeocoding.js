@@ -13,13 +13,13 @@ exports.handler = async function (event, context) {
     const response = await googleAPI.get(
       `geocode/json?latlng=${lat},${lon}&key=${process.env.GOOGLE_MAPS_API_KEY}`
     );
-    // console.log(response.data)
+
     return {
       statusCode: 200,
       body: JSON.stringify(response.data),
     };
   } catch (err) {
-    console.log(`owm: err`)
+    console.log(err.message);
     if (err.response) { // status code out of the range of 2xx
       console.log("Data :" , err.response.data);
       console.log("Status :" + err.response.status);
@@ -30,7 +30,7 @@ exports.handler = async function (event, context) {
     }
     return {
       statusCode: err.response.status,
-      body: JSON.stringify(err.message),
+      body: JSON.stringify(err.response.data),
     };
   }
 };

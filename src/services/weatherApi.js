@@ -1,4 +1,4 @@
-// import axios from "axios";
+import axios from "axios";
 
 // const API_KEY = process.env.REACT_APP_OWM_API_KEY;
 // const BASE_URL = `https://api.openweathermap.org/data/2.5`;
@@ -39,40 +39,13 @@ const getUrl = async (searchParams) => {
   const { lat, lon, units } = searchParams;
   const url = `/.netlify/functions/owmWeather?lat=${lat}&lon=${lon}&units=${units}`;
   try {
-    // const [current, hourly, daily] = await Promise.all([
-    //   baseAPI.get("/weather", {
-    //     params: {
-    //       lat: searchParams.lat,
-    //       lon: searchParams.lon,
-    //       appid: API_KEY,
-    //       units: searchParams.units || "metric",
-    //     },
-    //   }),
-    //   proAPI.get("/forecast/hourly", {
-    //     params: {
-    //       lat: searchParams.lat,
-    //       lon: searchParams.lon,
-    //       cnt: 20,
-    //       appid: API_KEY,
-    //       units: searchParams.units || "metric",
-    //     },
-    //   }),
-    //   baseAPI.get("/forecast/daily", {
-    //     params: {
-    //       lat: searchParams.lat,
-    //       lon: searchParams.lon,
-    //       cnt: 15,
-    //       appid: API_KEY,
-    //       units: searchParams.units || "metric",
-    //     },
-    //   }),
-    // ]);
-    const response = await fetch(url).then((res) => res.json());
-    let formattedData = formatApiResponse(response.current, searchParams);
+    // const response = await fetch(url).then((res) => res.json());
+    const response = await axios.get(url);
+    let formattedData = formatApiResponse(response.data.current, searchParams);
     return {
       current: formattedData,
-      hourly: response.hourly,
-      daily: response.daily,
+      hourly: response.data.hourly,
+      daily: response.data.daily,
     };
   } catch (error) {
     console.log(error.message);

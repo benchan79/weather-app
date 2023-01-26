@@ -225,9 +225,9 @@ function MapDisplay({ weather, searchParam, onSubmit, apiKey, owmKey }) {
               <p>Temperature: {selected.temp} {ctx.isMetric ? "°C" : "°F"}</p>
               <p>Wind speed: {selected.wind} {ctx.isMetric ? "m/s" : "ft/s"}</p>
               <p>Humidity: {selected.humidity}%</p>
-              <span role="img" aria-label="weather">
+              {/* <span role="img" aria-label="weather">
                   <img src={`https://openweathermap.org/img/wn/${selected.icon}@2x.png`} alt="" />
-              </span>
+              </span> */}
             </div>
           </InfoWindowF>
         ) : null}
