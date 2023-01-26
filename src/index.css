@@ -10,9 +10,22 @@
   }
 }
 
-.search {
+.overlays-panel {
   display: flex;
   justify-content: space-evenly;
+  position: relative;
+  /* top: 1rem; */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 800px;
+  z-index: 10;
+}
+
+.markers-panel {
+  display: flex;
+  justify-content: center;
+  gap:20px;
   position: relative;
   /* top: 1rem; */
   left: 50%;

@@ -38,6 +38,7 @@ function MapDisplay({ weather, searchParam, onSubmit, apiKey, owmKey }) {
   const [map, setMap] = useState(null);
   const [markers, setMarkers] = useState([]);
   const [selected, setSelected] = useState(null);
+  const [isShowMarkers, setIsShowMarkers] = useState(true)
 
 
   const weatherOverlay = () => {
@@ -103,6 +104,7 @@ function MapDisplay({ weather, searchParam, onSubmit, apiKey, owmKey }) {
         humidity: weather.humidity.toFixed(1),
       },
     ]);
+    console.log(markers)
     // eslint-disable-next-line
   }, [weather]);
 
@@ -123,16 +125,33 @@ function MapDisplay({ weather, searchParam, onSubmit, apiKey, owmKey }) {
         lng: event.latLng.lng(),
       };
       geocoderlatlng(latlng, onSubmit, ctx.isMetric);
+      
     },
     [ctx.isMetric, onSubmit]
   );
+
+
+  const hideMarkers = () => {
+    markers.length !== 0 && setIsShowMarkers(false);
+  }
+
+  const showMarkers = () => {
+    setIsShowMarkers(true);
+    console.log(markers)
+  }
+
+  const deleteMarkers = () => {
+    setMarkers([]);
+    setIsShowMarkers(true);
+  }
+
 
   if (loadError) return "Error loading maps";
   if (!isLoaded) return <div>Loading...</div>;
 
   return (
     <>
-      <div className="search">
+      <div className="overlays-panel">
         <button onClick={() => setWeatherMapType("temp_new")}>
           Temperature
         </button>
@@ -146,7 +165,19 @@ function MapDisplay({ weather, searchParam, onSubmit, apiKey, owmKey }) {
         <button onClick={() => setWeatherMapType("pressure_new")}>
           Sea Level Pressure
         </button>
-        <button onClick={() => map.overlayMapTypes.pop()}>Clear</button>
+        <button onClick={() => map.overlayMapTypes.pop()}>Clear Overlays</button>
+      </div>
+
+      <div className="markers-panel">
+        <button onClick={hideMarkers}>
+          Hide Markers
+        </button>
+        <button onClick={showMarkers}>
+          Show Markers
+        </button>
+        <button onClick={deleteMarkers}>
+          Delete Markers
+        </button>
       </div>
 
       <GoogleMap
@@ -159,12 +190,17 @@ function MapDisplay({ weather, searchParam, onSubmit, apiKey, owmKey }) {
         onLoad={onMapLoad}
         onUnmount={onUnmount}
       >
-        {markers.map((marker, i) => (
+        {isShowMarkers && markers.map((marker, i) => (
           <MarkerF
             key={i}
             position={{ lat: marker.lat, lng: marker.lng }}
             onClick={() => {
               setSelected(marker);
+            }}
+            onRightClick={() => {
+              const newMarkers = [...markers]
+              newMarkers.splice(i, 1)
+              setMarkers(newMarkers);
             }}
             icon={{
               url: `https://openweathermap.org/img/wn/${marker.icon}@2x.png`,
@@ -189,6 +225,9 @@ function MapDisplay({ weather, searchParam, onSubmit, apiKey, owmKey }) {
               <p>Temperature: {selected.temp} {ctx.isMetric ? "°C" : "°F"}</p>
               <p>Wind speed: {selected.wind} {ctx.isMetric ? "m/s" : "ft/s"}</p>
               <p>Humidity: {selected.humidity}%</p>
+              <span role="img" aria-label="weather">
+                  <img src={`https://openweathermap.org/img/wn/${selected.icon}@2x.png`} alt="" />
+              </span>
             </div>
           </InfoWindowF>
         ) : null}
