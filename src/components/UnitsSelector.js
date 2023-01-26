@@ -10,9 +10,9 @@ function UnitsSelector({ searchParam, getSearchData }) {
   };
 
   return (
-    <div className="flex flex-col text-blue-300">
+    <div className="flex flex-col align-center items-center text-blue-300">
       <button
-        className={`text-5xl py-2 mx-2  ${
+        className={`text-4xl py-2 mx-2  ${
           !ctx.isMetric ? "text-blue-800" : ""
         }`}
         onClick={() => handleClick("imperial")}
@@ -20,7 +20,7 @@ function UnitsSelector({ searchParam, getSearchData }) {
         °F
       </button>
       <button
-        className={`text-5xl py-2 mx-2 'text-blue-500' ${
+        className={`text-4xl py-2 mx-2 'text-blue-500' ${
           ctx.isMetric ? "text-blue-800" : ""
         }`}
         onClick={() => handleClick("metric")}

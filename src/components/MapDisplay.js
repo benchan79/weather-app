@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useContext } from "react";
-import { GoogleMap, MarkerF, useJsApiLoader } from "@react-google-maps/api";
+import { GoogleMap, MarkerF, useJsApiLoader, InfoWindowF } from "@react-google-maps/api";
 import WeatherContext from "../contexts/WeatherContext";
 // import { mapStyles } from "./mapStyles";
 
@@ -16,18 +16,17 @@ const options = {
   zoomControl: true,
   minZoom: 0,
   restriction: {
-    latLngBounds:{
-      north: 85.0, 
-      south: -85.0, 
-      west: -180.0, 
-      east: 180.0
+    latLngBounds: {
+      north: 85.0,
+      south: -85.0,
+      west: -180.0,
+      east: 180.0,
     },
-    strictBounds : true
-  }
+    strictBounds: true,
+  },
 };
 
-function MapDisplay({ searchParam, onSubmit, apiKey, owmKey }) {
- 
+function MapDisplay({ weather, searchParam, onSubmit, apiKey, owmKey }) {
   const [libraries] = useState(["places"]);
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: apiKey,
@@ -37,10 +36,13 @@ function MapDisplay({ searchParam, onSubmit, apiKey, owmKey }) {
   const [mapCoords, setMapCoords] = useState("");
   const [weatherMapType, setWeatherMapType] = useState("");
   const [map, setMap] = useState(null);
+  const [markers, setMarkers] = useState([]);
+  const [selected, setSelected] = useState(null);
+
 
   const weatherOverlay = () => {
     return (
-      weatherMapType && 
+      weatherMapType &&
       new window.google.maps.ImageMapType({
         getTileUrl: function (coord, zoom) {
           const normalizedCoord = getNormalizedCoord(coord, zoom);
@@ -58,7 +60,7 @@ function MapDisplay({ searchParam, onSubmit, apiKey, owmKey }) {
             normalizedCoord.y +
             ".png?appid=" +
             owmKey
-          )
+          );
         },
         tileSize: new window.google.maps.Size(256, 256),
         maxZoom: 15,
@@ -69,12 +71,12 @@ function MapDisplay({ searchParam, onSubmit, apiKey, owmKey }) {
   };
 
   useEffect(() => {
-    // Swap overlay types
     if (map) {
       map.overlayMapTypes.pop();
-      map.overlayMapTypes.insertAt(0, weatherOverlay());
+      let layer = weatherOverlay();
+      map.overlayMapTypes.insertAt(0, layer);
     }
-  // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [weatherMapType]);
 
   useEffect(() => {
@@ -84,9 +86,27 @@ function MapDisplay({ searchParam, onSubmit, apiKey, owmKey }) {
     });
   }, [searchParam]);
 
+  useEffect(() => {
+    setMarkers((current) => [
+      ...current,
+      {
+        lat: searchParam.lat,
+        lng: searchParam.lon,
+        icon: weather.icon,
+        name: weather.name,
+        desc: weather.description,
+        temp: weather.temp.toFixed(1),
+        high: weather.temp_max.toFixed(1),
+        low: weather.temp_min.toFixed(1),
+        feels_like: weather.feels_like.toFixed(1),
+        wind: weather.speed.toFixed(1),
+        humidity: weather.humidity.toFixed(1),
+      },
+    ]);
+    // eslint-disable-next-line
+  }, [weather]);
+
   const onMapLoad = useCallback(function callback(map) {
-    // map.overlayMapTypes.pop();
-    // map.overlayMapTypes.insertAt(0, weatherOverlay());
     setMap(map);
     // Maintain map position when changing weather overlay
     // setMapCoords(map.getCenter());
@@ -138,9 +158,41 @@ function MapDisplay({ searchParam, onSubmit, apiKey, owmKey }) {
         onClick={onMapClick}
         onLoad={onMapLoad}
         onUnmount={onUnmount}
-        
       >
-        <MarkerF position={mapCoords} />
+        {markers.map((marker, i) => (
+          <MarkerF
+            key={i}
+            position={{ lat: marker.lat, lng: marker.lng }}
+            onClick={() => {
+              setSelected(marker);
+            }}
+            icon={{
+              url: `https://openweathermap.org/img/wn/${marker.icon}@2x.png`,
+              anchor: new window.google.maps.Point(40, 40),
+              scaledSize: new window.google.maps.Size(80, 80),
+            }}
+          />
+        ))}
+
+        {selected ? (
+          <InfoWindowF
+            position={{ lat: selected.lat, lng: selected.lng }}
+            onCloseClick={() => {
+              setSelected(null);
+            }}
+          >
+            <div>
+              <h2>
+                {selected.name}
+              </h2>
+              <p>{selected.desc}</p>
+              <p>Temperature: {selected.temp} {ctx.isMetric ? "°C" : "°F"}</p>
+              <p>Wind speed: {selected.wind} {ctx.isMetric ? "m/s" : "ft/s"}</p>
+              <p>Humidity: {selected.humidity}%</p>
+            </div>
+          </InfoWindowF>
+        ) : null}
+
       </GoogleMap>
     </>
   );

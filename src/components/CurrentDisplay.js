@@ -16,13 +16,13 @@ function CurrentDisplay({ weather, searchParam, getSearchData }) {
 
   return (
     <>
-      <div className="flex flex-row w-full justify-center text-blue-800 pt-10">
+      <div className="flex flex-row w-full justify-center text-blue-800">
         <div>
           <div className="text-center">
             <h1 className="text-xl font-semibold">{weather.name}</h1>
-            <p className="font-light text-sm">{weather.description}</p>
+            <p className="font-light text-xl">{weather.description}</p>
           </div>
-          <div className="flex flex-col md:flex-row items-center justify-between gap-x-10 sm:pb-4">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-x-8 sm:pb-1">
             <div className="flex flex-col sm:flex-row align-center items-center py-10">
               {/* <FaSun size={100} /> */}
               <img
@@ -30,9 +30,8 @@ function CurrentDisplay({ weather, searchParam, getSearchData }) {
                 alt=""
               />
               <div className="ml-5">
-                <div className="pt-5 font-light text-center text-9xl whitespace-nowrap flex flex-row">
+                <div className="font-light text-center text-8xl whitespace-nowrap flex flex-row">
                   {weather.temp.toFixed(1)}
-
                   <UnitsSelector
                     searchParam={searchParam}
                     getSearchData={getSearchData}

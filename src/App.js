@@ -96,7 +96,7 @@ function App() {
         )}
       </div>
       {apiKey && weather && !ctx.error && !ctx.loading ? (
-        <MapDisplay searchParam={searchParam} onSubmit={getSearchData} apiKey={apiKey} owmKey={owmKey} />
+        <MapDisplay weather={weather} searchParam={searchParam} onSubmit={getSearchData} apiKey={apiKey} owmKey={owmKey} />
       ) : null}
       <p/>
     </div>
