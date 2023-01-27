@@ -1,5 +1,14 @@
 import axios from "axios";
 
+const API_KEY = process.env.REACT_APP_OWM_API_KEY;
+const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+
+const OWM_URL = "https://api.openweathermap.org/geo/1.0/";
+const GOOGLE_URL = "https://maps.googleapis.com/maps/";
+
+const googleAPI = axios.create({ baseURL: GOOGLE_URL });
+const owmAPI = axios.create({ baseURL: OWM_URL });
+
 export const geoAPIGetByZip = async (
   searchInputs,
   onSubmit,
@@ -8,11 +17,14 @@ export const geoAPIGetByZip = async (
   setLoading
 ) => {
   const { countryCode, zip } = searchInputs;
-  const url = `/.netlify/functions/owmZip?zip=${zip}&countryCode=${countryCode}`;
+  // const url = `/.netlify/functions/owmZip?zip=${zip}&countryCode=${countryCode}`;
   try {
     setError(false);
     setLoading(true);
-    const searchResults = await axios.get(url);
+    // const searchResults = await axios.get(url);
+    const searchResults = await owmAPI.get(
+      `zip?zip=${zip},${countryCode}&APPID=${API_KEY}`
+    );
     const result = {
       name: searchResults.data.name,
       country: searchResults.data.country,
@@ -33,9 +45,12 @@ export const geoAPIGetByZip = async (
 export const geoAPIGetByCity = async (searchValue, callback) => {
   const [city, countryCode] = searchValue.split(",");
   let options = [];
-  const url = `/.netlify/functions/owmCityName?city=${city}&countryCode=${countryCode}`;
+  // const url = `/.netlify/functions/owmCityName?city=${city}&countryCode=${countryCode}`;
   try {
-    const searchResults = await axios.get(url);
+    // const searchResults = await axios.get(url);
+    const searchResults = await owmAPI.get(
+      `direct?q=${city},${countryCode}&limit=5&APPID=${API_KEY}`
+    );
     searchResults.data.map((city) =>
       options.push({
         label: `${city.name}, ${city.state ? city.state + ", " : ""}${
@@ -65,11 +80,14 @@ export const googleReverseGeocoding = async (
   setLoading
 ) => {
   const { lat, lon } = searchInputs;
-  const url = `/.netlify/functions/reverseGeocoding?lat=${lat}&lon=${lon}`;
+  // const url = `/.netlify/functions/reverseGeocoding?lat=${lat}&lon=${lon}`;
   try {
     setError(false);
     setLoading(true);
-    const response = await axios.get(url);
+    // const response = await axios.get(url);
+    const response = await googleAPI.get(
+      `api/geocode/json?latlng=${lat},${lon}&key=${GOOGLE_MAPS_API_KEY}`
+    );
     if (!response.data.results[0]) {
       throw new Error(response.data.status);
     }

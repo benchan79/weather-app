@@ -19,8 +19,8 @@ function App() {
   const [hourlyFcast, setHourlyFcast] = useState(null);
   const [dailyFcast, setDailyFcast] = useState(null);
   const ctx = useContext(WeatherContext);
-  const [apiKey, setApiKey] = useState("")
-  const [owmKey, setOwmKey] = useState("");
+  // const [apiKey, setApiKey] = useState("")
+  // const [owmKey, setOwmKey] = useState("");
 
   const getSearchData = (searchInputs) => {
     setSearchParam(searchInputs);
@@ -38,30 +38,30 @@ function App() {
     fetchUrlData();
   }, [searchParam]);
 
-  useEffect(() => {
-    getGmapKey();
-    getOwmKey();
-  }, [])
+  // useEffect(() => {
+  //   getGmapKey();
+  //   getOwmKey();
+  // }, [])
 
-  const getGmapKey = async () => {
-    const url = `/.netlify/functions/googleMaps`;
-    try {
-      const response = await fetch(url).then((res) => res.json());
-      setApiKey(response.apiKey)
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const getGmapKey = async () => {
+  //   const url = `/.netlify/functions/googleMaps`;
+  //   try {
+  //     const response = await fetch(url).then((res) => res.json());
+  //     setApiKey(response.apiKey)
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
-  const getOwmKey = async () => {
-    const url = `/.netlify/functions/owmMap`;
-    try {
-      const response = await fetch(url).then((res) => res.json());
-      setOwmKey(response.apiKey)
-    } catch (error) {
-    console.log(error);
-    }
-  };
+  // const getOwmKey = async () => {
+  //   const url = `/.netlify/functions/owmMap`;
+  //   try {
+  //     const response = await fetch(url).then((res) => res.json());
+  //     setOwmKey(response.apiKey)
+  //   } catch (error) {
+  //   console.log(error);
+  //   }
+  // };
 
   return (
     <div className="App">
@@ -95,8 +95,10 @@ function App() {
           </div>
         )}
       </div>
-      {apiKey && weather  ? (
-        <MapDisplay weather={weather} searchParam={searchParam} onSubmit={getSearchData} apiKey={apiKey} owmKey={owmKey} />
+      {/* {apiKey && weather  ? (
+        <MapDisplay weather={weather} searchParam={searchParam} onSubmit={getSearchData} apiKey={apiKey} owmKey={owmKey} /> */}
+      {weather  ? (
+        <MapDisplay weather={weather} searchParam={searchParam} onSubmit={getSearchData} />
       ) : null}
       <p/>
     </div>

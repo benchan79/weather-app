@@ -9,6 +9,9 @@ import WeatherContext from "../contexts/WeatherContext";
 import { v4 as uuidv4 } from "uuid";
 // import { mapStyles } from "./mapStyles";
 
+const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+const API_KEY = process.env.REACT_APP_OWM_API_KEY;
+
 const mapContainerStyle = {
   height: "100vh",
   width: "100vw",
@@ -31,10 +34,12 @@ const options = {
   },
 };
 
-function MapDisplay({ weather, searchParam, onSubmit, apiKey, owmKey }) {
+// function MapDisplay({ weather, searchParam, onSubmit, apiKey, owmKey }) {
+  function MapDisplay({ weather, searchParam, onSubmit }) {
   const [libraries] = useState(["places"]);
   const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: apiKey,
+    // googleMapsApiKey: apiKey,
+    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
     libraries,
   });
   const ctx = useContext(WeatherContext);
@@ -64,7 +69,8 @@ function MapDisplay({ weather, searchParam, onSubmit, apiKey, owmKey }) {
             "/" +
             normalizedCoord.y +
             ".png?appid=" +
-            owmKey
+            // owmKey
+            API_KEY
           );
         },
         tileSize: new window.google.maps.Size(256, 256),
