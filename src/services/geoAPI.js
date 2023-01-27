@@ -36,7 +36,6 @@ export const geoAPIGetByCity = async (searchValue, callback) => {
   const url = `/.netlify/functions/owmCityName?city=${city}&countryCode=${countryCode}`;
   try {
     const searchResults = await axios.get(url);
-    console.log(searchResults.data);
     searchResults.data.map((city) =>
       options.push({
         label: `${city.name}, ${city.state ? city.state + ", " : ""}${
