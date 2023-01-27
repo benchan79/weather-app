@@ -2,14 +2,13 @@ const axios = require("axios");
 
 const BASE_URL = `https://api.openweathermap.org/geo/1.0/`;
 const owmAPI = axios.create({ baseURL: BASE_URL });
+const owmApiKey = process.env.OWM_API_KEY;
 
 exports.handler = async function (event, context) {
-  // console.log(event);
-  // console.log(context);
   try {
     const { zip, countryCode } = event.queryStringParameters;
     const response = await owmAPI.get(
-      `zip?zip=${zip},${countryCode}&appid=${process.env.OWM_API_KEY}`
+      `zip?zip=${zip},${countryCode}&appid=${owmApiKey}`
     );
     // console.log(response.data)
     return {

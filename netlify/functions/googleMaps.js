@@ -1,18 +1,23 @@
+const googleApiKey = process.env.GOOGLE_MAPS_API_KEY;
+
 exports.handler = async function (event, context) {
   try {
-    const response = process.env.GOOGLE_MAPS_API_KEY;
+    const response = googleApiKey;
     return {
       statusCode: 200,
-      body: JSON.stringify({apiKey: response}),
+      body: JSON.stringify({ apiKey: response }),
     };
   } catch (err) {
-    if (err.response) { // status code out of the range of 2xx
-      console.log("Data :" , err.response.data);
+    if (err.response) {
+      // status code out of the range of 2xx
+      console.log("Data :", err.response.data);
       console.log("Status :" + err.response.status);
-    } else if (err.request) { // The request was made but no response was received
+    } else if (err.request) {
+      // The request was made but no response was received
       console.log(err.request);
-    } else {// Error on setting up the request
-      console.log('Error', err.message);
+    } else {
+      // Error on setting up the request
+      console.log("Error", err.message);
     }
     return {
       statusCode: err.response.status,
