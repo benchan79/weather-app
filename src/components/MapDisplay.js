@@ -9,8 +9,6 @@ import WeatherContext from "../contexts/WeatherContext";
 import { v4 as uuidv4 } from "uuid";
 // import { mapStyles } from "./mapStyles";
 
-// const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
-
 const mapContainerStyle = {
   height: "100vh",
   width: "100vw",
@@ -118,7 +116,7 @@ function MapDisplay({ weather, searchParam, onSubmit, apiKey, owmKey }) {
         },
       ]);
     }
-    console.log(markers);
+    // console.log(markers);
     // eslint-disable-next-line
   }, [weather]);
 
@@ -147,7 +145,7 @@ function MapDisplay({ weather, searchParam, onSubmit, apiKey, owmKey }) {
 
   const showMarkers = () => {
     setIsShowMarkers(true);
-    console.log(markers);
+    // console.log(markers);
   };
 
   const deleteMarkers = () => {
@@ -157,11 +155,11 @@ function MapDisplay({ weather, searchParam, onSubmit, apiKey, owmKey }) {
 
   const handleDeleteMarker = (marker_id) => {
     const newMarkers = [...markers];
-    const arrayWithoutMarkerKey = newMarkers.filter(function (marker) {
+    const filteredMarkers = newMarkers.filter(function (marker) {
       return marker.markerId !== marker_id;
     });
-    console.log(arrayWithoutMarkerKey);
-    setMarkers(arrayWithoutMarkerKey);
+    // console.log(filteredMarkers);
+    setMarkers(filteredMarkers);
   };
 
   if (loadError) return "Error loading maps";
