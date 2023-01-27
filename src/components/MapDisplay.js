@@ -1,7 +1,12 @@
 import React, { useState, useCallback, useEffect, useContext } from "react";
-import { GoogleMap, MarkerF, useJsApiLoader, InfoWindowF } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  MarkerF,
+  useJsApiLoader,
+  InfoWindowF,
+} from "@react-google-maps/api";
 import WeatherContext from "../contexts/WeatherContext";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 // import { mapStyles } from "./mapStyles";
 
 // const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
@@ -39,8 +44,7 @@ function MapDisplay({ weather, searchParam, onSubmit, apiKey, owmKey }) {
   const [map, setMap] = useState(null);
   const [markers, setMarkers] = useState([]);
   const [selected, setSelected] = useState(null);
-  const [isShowMarkers, setIsShowMarkers] = useState(true)
-
+  const [isShowMarkers, setIsShowMarkers] = useState(true);
 
   const weatherOverlay = () => {
     return (
@@ -89,31 +93,37 @@ function MapDisplay({ weather, searchParam, onSubmit, apiKey, owmKey }) {
   }, [searchParam]);
 
   useEffect(() => {
-    setMarkers((current) => [
-      ...current,
-      {
-        markerId: uuidv4(),
-        lat: searchParam.lat,
-        lng: searchParam.lon,
-        icon: weather.icon,
-        name: weather.name,
-        desc: weather.description,
-        temp: weather.temp.toFixed(1),
-        high: weather.temp_max.toFixed(1),
-        low: weather.temp_min.toFixed(1),
-        feels_like: weather.feels_like.toFixed(1),
-        wind: weather.speed.toFixed(1),
-        humidity: weather.humidity.toFixed(1),
-      },
-    ]);
-    console.log(markers)
+    const inMarkers = markers.some((marker) => {
+      if (marker.name === weather.name && marker.lat === weather.lat) {
+        return true;
+      }
+      return false;
+    });
+    if (!inMarkers) {
+      setMarkers((current) => [
+        ...current,
+        {
+          markerId: uuidv4(),
+          lat: weather.lat,
+          lng: weather.lon,
+          icon: weather.icon,
+          name: weather.name,
+          desc: weather.description,
+          temp: weather.temp.toFixed(1),
+          high: weather.temp_max.toFixed(1),
+          low: weather.temp_min.toFixed(1),
+          feels_like: weather.feels_like.toFixed(1),
+          wind: weather.speed.toFixed(1),
+          humidity: weather.humidity.toFixed(1),
+        },
+      ]);
+    }
+    console.log(markers);
     // eslint-disable-next-line
   }, [weather]);
 
   const onMapLoad = useCallback(function callback(map) {
     setMap(map);
-    // Maintain map position when changing weather overlay
-    // setMapCoords(map.getCenter());
   }, []);
 
   const onUnmount = useCallback(function callback(map) {
@@ -133,28 +143,26 @@ function MapDisplay({ weather, searchParam, onSubmit, apiKey, owmKey }) {
 
   const hideMarkers = () => {
     markers.length !== 0 && setIsShowMarkers(false);
-  }
+  };
 
   const showMarkers = () => {
     setIsShowMarkers(true);
-    console.log(markers)
-  }
+    console.log(markers);
+  };
 
   const deleteMarkers = () => {
     setMarkers([]);
     setIsShowMarkers(true);
-  }
+  };
 
   const handleDeleteMarker = (marker_id) => {
     const newMarkers = [...markers];
-    console.log(marker_id)
-    // console.log(newMarkers)
     const arrayWithoutMarkerKey = newMarkers.filter(function (marker) {
       return marker.markerId !== marker_id;
     });
-    console.log(arrayWithoutMarkerKey)
-    setMarkers(arrayWithoutMarkerKey)
-  }
+    console.log(arrayWithoutMarkerKey);
+    setMarkers(arrayWithoutMarkerKey);
+  };
 
   if (loadError) return "Error loading maps";
   if (!isLoaded) return <div>Loading...</div>;
@@ -175,19 +183,15 @@ function MapDisplay({ weather, searchParam, onSubmit, apiKey, owmKey }) {
         <button onClick={() => setWeatherMapType("pressure_new")}>
           Sea Level Pressure
         </button>
-        <button onClick={() => map.overlayMapTypes.pop()}>Clear Overlays</button>
+        <button onClick={() => map.overlayMapTypes.pop()}>
+          Clear Overlays
+        </button>
       </div>
 
       <div className="markers-panel">
-        <button onClick={hideMarkers}>
-          Hide Markers
-        </button>
-        <button onClick={showMarkers}>
-          Show Markers
-        </button>
-        <button onClick={deleteMarkers}>
-          Delete Markers
-        </button>
+        <button onClick={hideMarkers}>Hide Markers</button>
+        <button onClick={showMarkers}>Show Markers</button>
+        <button onClick={deleteMarkers}>Delete Markers</button>
       </div>
 
       <GoogleMap
@@ -200,29 +204,24 @@ function MapDisplay({ weather, searchParam, onSubmit, apiKey, owmKey }) {
         onLoad={onMapLoad}
         onUnmount={onUnmount}
       >
-        {isShowMarkers && markers.map((marker, i) => (
-          <MarkerF
-            key={marker.markerId}
-            position={{ lat: marker.lat, lng: marker.lng }}
-            onClick={() => {
-              setSelected(marker);
-            }}
-            // onRightClick={() => {
-            //   const newMarkers = [...markers]
-            //   newMarkers.splice(i, 1)
-            //   setMarkers(newMarkers);
-            // }}
-            onRightClick={() =>{
-              // const markerKey=`${marker.lat}-${marker.lng}`
-              handleDeleteMarker(marker.markerId)
-            }}
-            icon={{
-              url: `https://openweathermap.org/img/wn/${marker.icon}@2x.png`,
-              anchor: new window.google.maps.Point(40, 40),
-              scaledSize: new window.google.maps.Size(80, 80),
-            }}
-          />
-        ))}
+        {isShowMarkers &&
+          markers.map((marker, i) => (
+            <MarkerF
+              key={marker.markerId}
+              position={{ lat: marker.lat, lng: marker.lng }}
+              onClick={() => {
+                setSelected(marker);
+              }}
+              onRightClick={() => {
+                handleDeleteMarker(marker.markerId);
+              }}
+              icon={{
+                url: `https://openweathermap.org/img/wn/${marker.icon}@2x.png`,
+                anchor: new window.google.maps.Point(40, 40),
+                scaledSize: new window.google.maps.Size(80, 80),
+              }}
+            />
+          ))}
 
         {selected ? (
           <InfoWindowF
@@ -232,12 +231,14 @@ function MapDisplay({ weather, searchParam, onSubmit, apiKey, owmKey }) {
             }}
           >
             <div>
-              <h2>
-                {selected.name}
-              </h2>
+              <h2>{selected.name}</h2>
               <p>{selected.desc}</p>
-              <p>Temperature: {selected.temp} {ctx.isMetric ? "°C" : "°F"}</p>
-              <p>Wind speed: {selected.wind} {ctx.isMetric ? "m/s" : "ft/s"}</p>
+              <p>
+                Temperature: {selected.temp} {ctx.isMetric ? "°C" : "°F"}
+              </p>
+              <p>
+                Wind speed: {selected.wind} {ctx.isMetric ? "m/s" : "ft/s"}
+              </p>
               <p>Humidity: {selected.humidity}%</p>
               {/* <span role="img" aria-label="weather">
                   <img src={`https://openweathermap.org/img/wn/${selected.icon}@2x.png`} alt="" />
@@ -245,7 +246,6 @@ function MapDisplay({ weather, searchParam, onSubmit, apiKey, owmKey }) {
             </div>
           </InfoWindowF>
         ) : null}
-
       </GoogleMap>
     </>
   );
