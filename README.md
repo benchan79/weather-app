@@ -55,7 +55,7 @@ You also have to make sure your Google Maps API key is activated for the followi
 
 ## Installing without Netlify CLI
 
-If you do not plan to deploy using Netlify, then there is no need to install the netlify CLI. However, you do need to append `REACT_APP_` to all the environment variables names in the `.env` file and the frontend script files so that Create-React-App knows where to look for the keys.
+If you do not plan to deploy using Netlify, then there is no need to install the netlify CLI. However, you do need to add `REACT_APP_` to all the environment variables names in the `.env` file and the frontend script files so that Create-React-App knows where to look for the keys.
 
 For example:
 
@@ -65,7 +65,7 @@ REACT_APP_OWM_API_KEY="Your-OpenWeatherMap-API-key"
 REACT_APP_GOOGLE_MAPS_API_KEY="Your-Google-Maps-API-key"
 ```
 
-Next you have to go to each of the functions in the **netlify/functions/** folder and transfer the async functions back to the original functions in the frontend. These functions are found in the **services/** folder (geoAPI.js and weatherApi.js) and App.js. Remember to append
+Next you have to go to each of the functions in the **netlify/functions/** folder and transfer the async functions back to the original functions in the frontend. These functions are found in the **services/** folder (geoAPI.js and weatherApi.js) and App.js. Remember to add
 `REACT_APP_` to those environment variables.
 
 For example:
