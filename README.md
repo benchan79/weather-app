@@ -55,7 +55,9 @@ You also have to make sure your Google Maps API key is activated for the followi
 
 ## Installing without Netlify CLI
 
-If you do not plan to deploy using Netlify, then there is no need to install the netlify CLI. However, you do need to append `REACT_APP_` to all the environment variables names so that Create-React-App knows where to look for the keys.
+If you do not plan to deploy using Netlify, then there is no need to install the netlify CLI. However, you do need to append `REACT_APP_` to all the environment variables names in the `.env` file and the frontend script files so that Create-React-App knows where to look for the keys.
+
+For example:
 
 ```text
 // .env
@@ -63,20 +65,16 @@ REACT_APP_OWM_API_KEY="Your-OpenWeatherMap-API-key"
 REACT_APP_GOOGLE_MAPS_API_KEY="Your-Google-Maps-API-key"
 ```
 
+Next you have to go to each of the functions in the **netlify/functions/** folder and transfer the async functions back to the original functions in the frontend. These functions are found in the **services/** folder (geoAPI.js and weatherApi.js) and App.js. Remember to append
+`REACT_APP_` to those environment variables.
+
+For example:
+
 ```text
-// netlify/functions/googleMaps.js 
-// netlify/functions/reverseGeocoding.js
-
-const googleApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
-
-// netlify/functions/owmCityName.js
-// netlify/functions/owmMap.js
-// netlify/functions/owmWeather.js
-// netlify/functions/owmZip.js
-
 const owmApiKey = process.env.REACT_APP_OWM_API_KEY;
-
 ```
+
+***
 
 We tried to use netlify functions to get data from **[Google Maps JavaScript API](https://developers.google.com/maps/documentation/javascript)** while using the `@react-google-maps/api` library but were unable to do so as it used a `useJsApiLoader` hook to check for authentication.
 

@@ -19,6 +19,7 @@ const options = {
   disableDefaultUI: true,
   zoomControl: true,
   minZoom: 0,
+  disableDoubleClickZoom: true,
   restriction: {
     latLngBounds: {
       north: 85.0,
