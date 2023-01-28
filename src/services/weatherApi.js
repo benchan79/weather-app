@@ -1,12 +1,5 @@
 import axios from "axios";
 
-// const API_KEY = process.env.REACT_APP_OWM_API_KEY;
-// const BASE_URL = `https://api.openweathermap.org/data/2.5`;
-// const PRO_URL = "https://pro.openweathermap.org/data/2.5";
-
-// const baseAPI = axios.create({ baseURL: BASE_URL });
-// const proAPI = axios.create({ baseURL: PRO_URL });
-
 const formatApiResponse = (data, searchParams) => {
   let {
     coord: { lat, lon },
@@ -35,19 +28,24 @@ const formatApiResponse = (data, searchParams) => {
   };
 };
 
-const getUrl = async (searchParams) => {
+const getUrl = async (searchParams, setError, setLoading) => {
   const { lat, lon, units } = searchParams;
   const url = `/.netlify/functions/owmWeather?lat=${lat}&lon=${lon}&units=${units}`;
   try {
+    setError(false);
+    setLoading(true);
     // const response = await fetch(url).then((res) => res.json());
     const response = await axios.get(url);
     let formattedData = formatApiResponse(response.data.current, searchParams);
+    setLoading(false);
     return {
       current: formattedData,
       hourly: response.data.hourly,
       daily: response.data.daily,
     };
   } catch (error) {
+    setError(true);
+    setLoading(false);
     console.log(error.message);
   }
 };

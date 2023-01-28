@@ -27,13 +27,16 @@ function App() {
   useEffect(() => {
     const fetchUrlData = async () =>
       searchParam
-        ? await getUrl(searchParam).then((res) => {
-            setWeather(res.current);
-            setHourlyFcast(res.hourly);
-            setDailyFcast(res.daily);
-          })
+        ? await getUrl(searchParam, ctx.setError, ctx.setLoading).then(
+            (res) => {
+              setWeather(res.current);
+              setHourlyFcast(res.hourly);
+              setDailyFcast(res.daily);
+            }
+          )
         : null;
     fetchUrlData();
+      // eslint-disable-next-line
   }, [searchParam]);
 
   useEffect(() => {
@@ -70,14 +73,14 @@ function App() {
 
         {weather && !ctx.error && !ctx.loading ? (
           <div>
-            <div className="mx-auto max-w-screen-md h-fit shadow-xl p-10 bg-white bg-opacity-75 mt-10">
+            <div className="mx-auto max-w-screen-md h-fit shadow-xl p-10 bg-white bg-opacity-75 mt-10 rounded-2xl">
               <CurrentDisplay
                 weather={weather}
                 searchParam={searchParam}
                 getSearchData={getSearchData}
               />
             </div>
-            <div className="mx-auto max-w-screen-md h-fit shadow-xl p-10 bg-white bg-opacity-75 mt-10">
+            <div className="mx-auto max-w-screen-md h-fit shadow-xl p-10 bg-white bg-opacity-75 mt-10 rounded-2xl">
               <HourlyDisplay weather={hourlyFcast} />
               <DailyDisplay weather={dailyFcast} />
             </div>
