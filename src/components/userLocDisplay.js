@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useState, useContext } from "react";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import styles from "./userLocDisplay.module.css";
 import WeatherContext from "../contexts/WeatherContext";
@@ -6,6 +6,7 @@ import { googleReverseGeocoding } from "../services/geoAPI";
 
 function UserLocDisplay({ onClick }) {
   const ctx = useContext(WeatherContext);
+  const [showInfo, setShowInfo] = useState(false);
 
   const handleClick = async (event) => {
     event.preventDefault();
@@ -39,9 +40,23 @@ function UserLocDisplay({ onClick }) {
   };
 
   return (
-    <button onClick={handleClick} className={styles.userLocButton}>
-      <FaMapMarkerAlt />
-    </button>
+    <div
+      className={styles.dropdown}
+      onMouseEnter={() => setShowInfo(true)}
+      onMouseLeave={() => setShowInfo(false)}
+    >
+      <button onClick={handleClick} className={styles.userLocButton}>
+        <FaMapMarkerAlt />
+      </button>
+
+      {showInfo && (
+        <div className={styles.dropdowncontent}>
+          <p onClick={handleClick} className={styles.locationli}>
+            Current Location
+          </p>
+        </div>
+      )}
+    </div>
   );
 }
 export default UserLocDisplay;

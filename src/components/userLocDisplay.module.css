@@ -26,3 +26,36 @@
 .userLocButton:active {
   background-color: rgb(172, 238, 175);
 }
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdowncontent {
+  position: absolute;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  background-color: white;
+  width:max-content;
+  margin:0.1rem;
+  border-radius: 6px;
+}
+
+/* Links inside the dropdown */
+.locationli {
+  color: dimgray;
+  text-decoration: none;
+  display: flex;
+  width:100%;
+  flex-direction: row;
+  border-radius: 6px;
+  padding:0.75rem;
+  cursor: pointer;
+}
+
+.locationli:hover {
+  color:  darkblue;
+  background-color: aliceblue;
+}

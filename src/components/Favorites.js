@@ -64,22 +64,12 @@ function FavoritesMenu({ onSelect, selectedLocation }) {
       {showList && (
         <div className={styles.dropdowncontent}>
           {!selectedLocation && !locArray[0] && (
-            <table className={`${styles.table}`}>
-              <thead>
-                <tr>
-                  <th>Add to favorites</th>
-                </tr>
-              </thead>
-            </table>
+            <p className={styles.locationli}>Add to favorites</p>
           )}
           {selectedLocation && !locArray[0] && (
-            <table className={`${styles.table}`}>
-              <thead>
-                <tr>
-                  <th onClick={handleAdd}>Add to favorites</th>
-                </tr>
-              </thead>
-            </table>
+            <p onClick={handleAdd} className={styles.locationli}>
+              Add to favorites
+            </p>
           )}
           {locArray && (
             <table className={`${styles.table}`}>
