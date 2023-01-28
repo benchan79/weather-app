@@ -9,15 +9,18 @@ function FavoritesMenu({ onSelect, selectedLocation }) {
   const [showList, setShowList] = useState(false);
   // const [delayHandler, setDelayHandler] = useState(null);
 
-  const handleAdd = () => {
-    const inLocArray = locArray.some((location) => {
-      if (location.name === selectedLocation.name) {
-        return true;
+  const handleAdd = (e) => {
+    e.preventDefault();
+    if (selectedLocation) {
+      const inLocArray = locArray.some((location) => {
+        if (location.name === selectedLocation.name) {
+          return true;
+        }
+        return false;
+      });
+      if (!inLocArray) {
+        setlocArray((current) => [...current, selectedLocation]);
       }
-      return false;
-    });
-    if (!inLocArray) {
-      setlocArray((current) => [...current, selectedLocation]);
     }
   };
 
@@ -60,6 +63,15 @@ function FavoritesMenu({ onSelect, selectedLocation }) {
 
       {showList && (
         <div className={styles.dropdowncontent}>
+          {!selectedLocation && !locArray[0] && (
+            <table className={`${styles.table}`}>
+              <thead>
+                <tr>
+                  <th>Add to favorites</th>
+                </tr>
+              </thead>
+            </table>
+          )}
           {selectedLocation && !locArray[0] && (
             <table className={`${styles.table}`}>
               <thead>
@@ -71,12 +83,6 @@ function FavoritesMenu({ onSelect, selectedLocation }) {
           )}
           {locArray && (
             <table className={`${styles.table}`}>
-              {/* <thead>
-                <tr>
-                  <th>City</th>
-                  <th>Delete</th>
-                </tr>
-              </thead> */}
               <tbody>
                 {locArray.map((loc, index) => (
                   <tr key={loc.name}>

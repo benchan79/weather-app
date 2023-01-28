@@ -6,6 +6,8 @@ import AsyncSelect from "react-select/async";
 import { countryCodes } from "../data/countries";
 import WeatherContext from "../contexts/WeatherContext";
 import { googleReverseGeocoding } from "../services/geoAPI";
+import FavoritesMenu from "./Favorites";
+import UserLocDisplay from "./userLocDisplay";
 
 const initialState = {
   countryCode: "",
@@ -15,7 +17,7 @@ const initialState = {
   limit: 5,
 };
 
-const SearchBar = ({ onSubmit }) => {
+const SearchBar = ({ onSubmit, searchParam }) => {
   const ctx = useContext(WeatherContext);
   const [searchType, setSearchType] = useState("city");
   const [searchInputs, setSearchInputs] = useState(initialState);
@@ -97,11 +99,13 @@ const SearchBar = ({ onSubmit }) => {
           <label htmlFor="html">&nbsp; Search by Coordinates</label>
         </div>
       </div>
-      <div className="flex flex-row justify-center w-full">
+      <div className="flex flex-row bg-white rounded-lg items-center justify-center w-full">
+        <FavoritesMenu onSelect={onSubmit} selectedLocation={searchParam} />
+        <UserLocDisplay onClick={onSubmit} />
         {searchType === "city" && (
-          <form className="flex justify-between bg-white rounded-lg w-full">
+          <form className="flex justify-between bg-white rounded-lg items-center w-full">
             <AsyncSelect
-              className="font-light w-full shadow-xl bg-transparent h-full p-4 text-black"
+              className="font-light w-full bg-transparent h-full p-4 text-black"
               loadOptions={loadOptionsCity}
               onChange={handleSubmitCity}
               placeholder="City, Country code"
@@ -112,10 +116,10 @@ const SearchBar = ({ onSubmit }) => {
         {searchType === "zip" && (
           <form
             onSubmit={handleSubmitZip}
-            className="flex justify-between bg-white rounded-lg w-full"
+            className="flex justify-between bg-white rounded-lg items-center w-full"
           >
             <Select
-              className="font-light w-full shadow-xl bg-transparent h-full p-4 text-black"
+              className="font-light w-full h-full p-4 text-black"
               options={countryCodes}
               onChange={handleCountryChange}
               placeholder="Country"
@@ -123,7 +127,7 @@ const SearchBar = ({ onSubmit }) => {
             />
             <input
               onChange={handleInputChange}
-              className="font-light w-full shadow-xl bg-transparent h-full p-4 text-black"
+              className="font-light w-full h-1/4 p-1 text-black border-2 rounded"
               name="zip"
               type="text"
               placeholder="Zip Code"
@@ -137,11 +141,11 @@ const SearchBar = ({ onSubmit }) => {
         {searchType === "coord" && (
           <form
             onSubmit={handleSubmitCoord}
-            className="flex justify-between bg-white rounded-lg w-full gap-10"
+            className="flex justify-between bg-white rounded-lg items-center w-full"
           >
             <input
               onChange={handleInputChange}
-              className="font-light w-full shadow-xl bg-transparent h-full p-4 text-black"
+              className="font-light w-full h-1/4 p-1 text-black border-2 rounded mx-2"
               name="lat"
               type="text"
               placeholder="Latitude"
@@ -149,7 +153,7 @@ const SearchBar = ({ onSubmit }) => {
             />
             <input
               onChange={handleInputChange}
-              className="font-light w-full shadow-xl bg-transparent h-full p-4 text-black"
+              className="font-light w-full h-1/4 p-1 text-black border-2 rounded mx-2"
               name="lon"
               type="text"
               placeholder="Longitude"

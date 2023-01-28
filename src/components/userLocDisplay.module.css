@@ -1,7 +1,6 @@
 .userLocCard {
   text-align: center;
   width: 100%;
-
   padding: 0.5rem;
   font-weight: 400;
   font-size: 0.85rem;
@@ -12,12 +11,12 @@
 .userLocButton {
   background-color: #04AA6D;
   color: white;
-  margin-inline: 0.20rem;
-  margin-top: 0.2rem;
-  padding: 1rem;
+  margin: 0.5rem;
+  /* margin-inline: 0.25rem; */
+  padding:0.9rem;
+  /* margin-top: 0.2rem; */
   font-size: 1.5rem;
   border-radius: 6px;
-  transition: background-color 0.3s ease;
 }
 
 .userLocButton:hover {
