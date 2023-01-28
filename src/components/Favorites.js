@@ -5,9 +5,20 @@ import WeatherContext from "../contexts/WeatherContext";
 
 function FavoritesMenu({ onSelect, selectedLocation }) {
   const ctx = useContext(WeatherContext);
+  const [locArray, setlocArray] = useState([]);
+  const [showList, setShowList] = useState(false);
+  // const [delayHandler, setDelayHandler] = useState(null);
 
   const handleAdd = () => {
-    setlocArray([...locArray, selectedLocation]);
+    const inLocArray = locArray.some((location) => {
+      if (location.name === selectedLocation.name) {
+        return true;
+      }
+      return false;
+    });
+    if (!inLocArray) {
+      setlocArray((current) => [...current, selectedLocation]);
+    }
   };
 
   const handleClick = (loc) => {
@@ -15,37 +26,67 @@ function FavoritesMenu({ onSelect, selectedLocation }) {
     onSelect({ ...loc, units: ctx.isMetric ? "metric" : "imperial" });
   };
 
-  const [locArray, setlocArray] = useState([]);
-  const [showList, setShowList] = useState(false);
+  const handlerDeleteItem = (locName) => {
+    const newLocArray = [...locArray];
+    const filteredLocArray = newLocArray.filter((loc) => {
+      return loc.name !== locName;
+    });
+    setlocArray(filteredLocArray);
+  };
+
+  const handleMouseEnter = (event) => {
+    setShowList(true);
+  };
+
+  const handleMouseLeave = () => {
+    // setDelayHandler(
+    //   setTimeout(() => {
+    //     setShowList(false);
+    //   }, 2000)
+    // );
+    // clearTimeout(delayHandler);
+    setShowList(false);
+  };
 
   return (
     <div
       className={styles.dropdown}
-      onMouseEnter={() => setShowList(true)}
-      onMouseLeave={() => setShowList(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
-      <button className={styles.dropbtn}>
+      <button className={styles.dropbtn} onClick={handleAdd}>
         <FaStar />
       </button>
+
       {showList && (
         <div className={styles.dropdowncontent}>
-          {selectedLocation && (
-            <button onClick={handleAdd} className={styles.locationli}>
-              Add to favorites
-            </button>
+          {selectedLocation && !locArray[0] && (
+            <table className={`${styles.table}`}>
+              <thead>
+                <tr>
+                  <th onClick={handleAdd}>Add to favorites</th>
+                </tr>
+              </thead>
+            </table>
           )}
-          {locArray &&
-            locArray.map((loc, index) => {
-              return (
-                <button
-                  key={index}
-                  className={styles.locationli}
-                  onClick={() => handleClick(loc)}
-                >
-                  {loc.name}
-                </button>
-              );
-            })}
+          {locArray && (
+            <table className={`${styles.table}`}>
+              {/* <thead>
+                <tr>
+                  <th>City</th>
+                  <th>Delete</th>
+                </tr>
+              </thead> */}
+              <tbody>
+                {locArray.map((loc, index) => (
+                  <tr key={loc.name}>
+                    <td onClick={() => handleClick(loc)}>{loc.name}</td>
+                    <td onClick={() => handlerDeleteItem(loc.name)}> ❌ </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       )}
     </div>

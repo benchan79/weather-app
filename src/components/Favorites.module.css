@@ -41,10 +41,61 @@
 .locationli:hover {
   color:  darkblue;
   background-color: aliceblue;
+
 }
 
 .dropbtn:hover {
   background-color: #038050;
-  transition-duration: 0.25s;
+  transition-duration: 0.5s;
   }
 
+.table th,
+.table td {
+  cursor: pointer;
+}
+
+.table {
+  border-collapse: collapse;
+  /* margin: 25px 0; */
+  font-size: 0.9em;
+  font-family: sans-serif;
+  /* min-width: 400px; */
+  width:max-content;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+  padding:1rem;
+}
+.table thead tr {
+  background-color: #f3f3f3;
+  text-align: right;
+}
+
+.table th,
+.table td {
+  padding: 10px 20px;
+  text-align: right;
+}
+
+.table th:nth-child(1),
+.table td:nth-child(1) {
+  text-align: left;
+}
+
+.table th:hover,
+.table td:hover {
+  color:  darkblue;
+  background-color: aliceblue;
+}
+
+
+.table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+/* .table tbody tr:last-of-type {
+  border-bottom: 2px solid #5287e3;
+} */
