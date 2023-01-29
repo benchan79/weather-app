@@ -1,4 +1,5 @@
 import axios from "axios";
+import { countryCodes } from "../data/countries";
 
 export const geoAPIGetByZip = async (
   searchInputs,
@@ -15,7 +16,8 @@ export const geoAPIGetByZip = async (
     const searchResults = await axios.get(url);
     const result = {
       name: searchResults.data.name,
-      country: searchResults.data.country,
+      // country: searchResults.data.country,
+      country: countryCodes.find(location => location.value === searchResults.data.country).label,
       zip: searchResults.data.zip,
       lat: searchResults.data.lat,
       lon: searchResults.data.lon,
@@ -38,13 +40,11 @@ export const geoAPIGetByCity = async (searchValue, callback) => {
     const searchResults = await axios.get(url);
     searchResults.data.map((city) =>
       options.push({
-        label: `${city.name}, ${city.state ? city.state + ", " : ""}${
-          city.country
-        }`,
+        label: `${city.name}, ${city.state ? city.state + ", " : ""}${countryCodes.find(location => location.value === city.country).label}`,
         value: {
           name: city.name,
           state: city.state,
-          country: city.country,
+          country: countryCodes.find(location => location.value === city.country).label,
           lat: city.lat,
           lon: city.lon,
         },
