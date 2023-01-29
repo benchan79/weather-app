@@ -2,28 +2,27 @@
   display: flex;
   justify-content: space-evenly;
   position: relative;
-  top: 1rem;
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
-  max-width: 800px;
-  z-index: 10;
+  max-width: 900px;
+  padding: 0;
+  margin: 0;
 }
 
 .markersPanel {
   display: flex;
-  justify-content: center;
-  gap:20px;
+  gap: 20px;
   position: relative;
-  top: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 4rem;
+  left: 3%;
+  /* transform: translateX(-50%); */
   width: 100%;
   max-width: 800px;
   z-index: 10;
 }
 
-.search {
+/* .search {
   position: relative;
   top: 3rem;
   left: 5%;
@@ -38,7 +37,7 @@
   padding: 0.5rem;
   font-size: 1.5rem;
   width: 100%;
-}
+} */
 
 /* .locate {
   position: relative;
@@ -54,12 +53,12 @@
 
 .tooltip {
   position: relative;
-  display: inline-block;
-  width: 30px; /* width of container */
+  /* display: inline-block; */
+  width: 60px; /* width of container */
   height: 30px; /* height of container */
-  top: 3rem;
-  left: 1rem;
-  z-index: 10;
+  /* top: 4rem; */
+  /* left: 5%; */
+  /* z-index: 10; */
   /* overflow: hidden; */
   /* object-fit: cover; */
   /* border: 1px solid black; */
@@ -67,8 +66,8 @@
   /* border-bottom: 1px dotted black;  */
 }
 
-.tooltip img {
-  margin: -20px 0px 0px 0px;
+.tooltip button {
+  margin: 5px 0px 0px 0px;
 }
 
 /* Tooltip text */

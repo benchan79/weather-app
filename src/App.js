@@ -36,7 +36,7 @@ function App() {
           )
         : null;
     fetchUrlData();
-      // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [searchParam]);
 
   useEffect(() => {
@@ -73,7 +73,7 @@ function App() {
 
         {weather && !ctx.error && !ctx.loading ? (
           <div>
-            <div className="mx-auto max-w-screen-md h-fit shadow-xl p-10 bg-white bg-opacity-75 mt-10 rounded-2xl">
+            <div className="mx-auto max-w-screen-md h-fit shadow-xl pt-10 bg-white bg-opacity-75 mt-10 rounded-2xl">
               <CurrentDisplay
                 weather={weather}
                 searchParam={searchParam}
@@ -90,17 +90,19 @@ function App() {
             <Conditions error={ctx.error} loading={ctx.loading} />
           </div>
         )}
+
+        {apiKey && weather ? (
+          <div className="p-10 bg-white bg-opacity-75 mt-10 rounded-2xl">
+            <MapDisplay
+              weather={weather}
+              searchParam={searchParam}
+              onSubmit={getSearchData}
+              apiKey={apiKey}
+              owmKey={owmKey}
+            />
+          </div>
+        ) : null}
       </div>
-      {apiKey && weather ? (
-        <MapDisplay
-          weather={weather}
-          searchParam={searchParam}
-          onSubmit={getSearchData}
-          apiKey={apiKey}
-          owmKey={owmKey}
-        />
-      ) : null}
-      <p />
     </div>
   );
 }

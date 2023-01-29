@@ -13,7 +13,7 @@ import { v4 as uuidv4 } from "uuid";
 
 const mapContainerStyle = {
   height: "100vh",
-  width: "100vw",
+  width: "90vw",
 };
 
 const options = {
@@ -170,97 +170,204 @@ function MapDisplay({ weather, searchParam, onSubmit, apiKey, owmKey }) {
 
   return (
     <>
-      <div className={styles.overlaysPanel}>
-        <button onClick={() => setWeatherMapType("temp_new")}>
-          Temperature
-        </button>
-        <button onClick={() => setWeatherMapType("wind_new")}>
-          Wind Speed
-        </button>
-        <button onClick={() => setWeatherMapType("clouds_new")}>Clouds</button>
-        <button onClick={() => setWeatherMapType("precipitation_new")}>
-          Precipitation
-        </button>
-        <button onClick={() => setWeatherMapType("pressure_new")}>
-          Sea Level Pressure
-        </button>
-        <button onClick={() => map.overlayMapTypes.pop()}>
-          Clear Overlays
-        </button>
-      </div>
+      <div className="flex flex-col justify-center">
+        <div className="flex justify-center gap-5">
+          {weatherMapType !== "temp_new" ? (
+            <button
+              onClick={() => setWeatherMapType("temp_new")}
+              className="bg-blue-300 hover:bg-blue-400 text-black py-2 px-4 rounded-xl"
+            >
+              Temperature
+            </button>
+          ) : (
+            <button
+              onClick={() => setWeatherMapType("temp_new")}
+              className="bg-blue-400 hover:bg-blue-400 text-black py-2 px-4 rounded-xl"
+            >
+              Temperature
+            </button>
+          )}
 
-      <div className={styles.markersPanel}>
-        <button onClick={hideMarkers}>Hide Icons</button>
-        <button onClick={showMarkers}>Show Icons</button>
-        <button onClick={deleteMarkers}>Remove All Icons</button>
-      </div>
+          {weatherMapType !== "wind_new" ? (
+            <button
+              onClick={() => setWeatherMapType("wind_new")}
+              className="bg-blue-300 hover:bg-blue-400 text-black py-2 px-4 rounded-xl"
+            >
+              Wind Speed
+            </button>
+          ) : (
+            <button
+              onClick={() => setWeatherMapType("wind_new")}
+              className="bg-blue-400 hover:bg-blue-400 text-black py-2 px-4 rounded-xl"
+            >
+              Wind Speed
+            </button>
+          )}
 
-      <div className={styles.tooltip}>
-        <button>
-          <FaInfoCircle size={30} />
-        </button>
-        <div className={styles.tooltiptext}>
-          <p>Click on Weather Icon to see more info</p>
-          <p>Right Click on Weather Icon to Remove it</p>
-          <p>Click on other locations to add more icons</p>
+          {weatherMapType !== "clouds_new" ? (
+            <button
+              onClick={() => setWeatherMapType("clouds_new")}
+              className="bg-blue-300 hover:bg-blue-400 text-black py-2 px-4 rounded-xl"
+            >
+              Clouds
+            </button>
+          ) : (
+            <button
+              onClick={() => setWeatherMapType("clouds_new")}
+              className="bg-blue-400 hover:bg-blue-400 text-black py-2 px-4 rounded-xl"
+            >
+              Clouds
+            </button>
+          )}
+
+          {weatherMapType !== "precipitation_new" ? (
+            <button
+              onClick={() => setWeatherMapType("precipitation_new")}
+              className="bg-blue-300 hover:bg-blue-400 text-black py-2 px-4 rounded-xl"
+            >
+              Precipitation
+            </button>
+          ) : (
+            <button
+              onClick={() => setWeatherMapType("precipitation_new")}
+              className="bg-blue-400 hover:bg-blue-400 text-black py-2 px-4 rounded-xl"
+            >
+              Precipitation
+            </button>
+          )}
+
+          {weatherMapType !== "pressure_new" ? (
+            <button
+              onClick={() => setWeatherMapType("pressure_new")}
+              className="bg-blue-300 hover:bg-blue-400 text-black py-2 px-4 rounded-xl"
+            >
+              Sea Level Pressure
+            </button>
+          ) : (
+            <button
+              onClick={() => setWeatherMapType("pressure_new")}
+              className="bg-blue-400 hover:bg-blue-400 text-black py-2 px-4 rounded-xl"
+            >
+              Sea Level Pressure
+            </button>
+          )}
+          <button
+            onClick={() => {
+              map.overlayMapTypes.pop();
+              setWeatherMapType("");
+            }}
+            className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full"
+          >
+            Clear Overlays
+          </button>
+        </div>
+
+        <div className={styles.markersPanel}>
+          <div className={styles.tooltip}>
+            <button>
+              <FaInfoCircle size={30} />
+            </button>
+            <div className={styles.tooltiptext}>
+              <p>Click on Weather Icon to see more info</p>
+              <p>Right Click on Weather Icon to Remove it</p>
+              <p>Click on other locations to add more icons</p>
+            </div>
+          </div>
+          {isShowMarkers ? (
+            <button
+              onClick={hideMarkers}
+              className="bg-blue-300 hover:bg-blue-400 text-black py-2 px-4 rounded-xl"
+            >
+              Hide Icons
+            </button>
+          ) : (
+            <button
+              onClick={hideMarkers}
+              className="bg-blue-400 hover:bg-blue-400 text-black py-2 px-4 rounded-xl"
+            >
+              Hide Icons
+            </button>
+          )}
+          {!isShowMarkers ? (
+            <button
+              onClick={showMarkers}
+              className="bg-blue-300 hover:bg-blue-400 text-black py-2 px-4 rounded-xl"
+            >
+              Show Icons
+            </button>
+          ) : (
+            <button
+              onClick={showMarkers}
+              className="bg-blue-400 hover:bg-blue-400 text-black py-2 px-4 rounded-xl"
+            >
+              Show Icons
+            </button>
+          )}
+          <button
+            onClick={deleteMarkers}
+            className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full"
+          >
+            Remove All Icons
+          </button>
         </div>
       </div>
+      <div className="flex justify-center z-0">
+        <GoogleMap
+          id="map"
+          options={options}
+          mapContainerStyle={mapContainerStyle}
+          center={mapCoords}
+          zoom={10}
+          onClick={onMapClick}
+          onLoad={onMapLoad}
+          onUnmount={onUnmount}
+        >
+          {isShowMarkers &&
+            markers.map((marker, i) => (
+              <MarkerF
+                key={marker.markerId}
+                position={{ lat: marker.lat, lng: marker.lng }}
+                onClick={() => {
+                  setSelected(marker);
+                }}
+                onRightClick={() => {
+                  handleDeleteMarker(marker.markerId);
+                }}
+                icon={{
+                  url: `https://openweathermap.org/img/wn/${marker.icon}@2x.png`,
+                  anchor: new window.google.maps.Point(40, 40),
+                  scaledSize: new window.google.maps.Size(80, 80),
+                }}
+              />
+            ))}
 
-      <GoogleMap
-        id="map"
-        options={options}
-        mapContainerStyle={mapContainerStyle}
-        center={mapCoords}
-        zoom={10}
-        onClick={onMapClick}
-        onLoad={onMapLoad}
-        onUnmount={onUnmount}
-      >
-        {isShowMarkers &&
-          markers.map((marker, i) => (
-            <MarkerF
-              key={marker.markerId}
-              position={{ lat: marker.lat, lng: marker.lng }}
-              onClick={() => {
-                setSelected(marker);
+          {selected ? (
+            <InfoWindowF
+              position={{ lat: selected.lat, lng: selected.lng }}
+              onCloseClick={() => {
+                setSelected(null);
               }}
-              onRightClick={() => {
-                handleDeleteMarker(marker.markerId);
-              }}
-              icon={{
-                url: `https://openweathermap.org/img/wn/${marker.icon}@2x.png`,
-                anchor: new window.google.maps.Point(40, 40),
-                scaledSize: new window.google.maps.Size(80, 80),
-              }}
-            />
-          ))}
-
-        {selected ? (
-          <InfoWindowF
-            position={{ lat: selected.lat, lng: selected.lng }}
-            onCloseClick={() => {
-              setSelected(null);
-            }}
-          >
-            <div className="text-base">
-              <p className="font-bold">{selected.name}</p>
-              <ul className="list-disc list-inside">
-                <li>
-                  {selected.desc.charAt(0).toUpperCase() +
-                    selected.desc.slice(1)}
-                </li>
-                <li>
-                  Temperature: {selected.temp} {ctx.isMetric ? "°C" : "°F"}
-                </li>
-                <li>
-                  Wind speed: {selected.wind} {ctx.isMetric ? "m/s" : "ft/s"}
-                </li>
-                <li>Humidity: {selected.humidity}%</li>
-              </ul>
-            </div>
-          </InfoWindowF>
-        ) : null}
-      </GoogleMap>
+            >
+              <div className="text-base">
+                <p className="font-bold">{selected.name}</p>
+                <ul className="list-disc list-inside">
+                  <li>
+                    {selected.desc.charAt(0).toUpperCase() +
+                      selected.desc.slice(1)}
+                  </li>
+                  <li>
+                    Temperature: {selected.temp} {ctx.isMetric ? "°C" : "°F"}
+                  </li>
+                  <li>
+                    Wind speed: {selected.wind} {ctx.isMetric ? "m/s" : "ft/s"}
+                  </li>
+                  <li>Humidity: {selected.humidity}%</li>
+                </ul>
+              </div>
+            </InfoWindowF>
+          ) : null}
+        </GoogleMap>
+      </div>
     </>
   );
 }
