@@ -1,7 +1,7 @@
 // import {FaSun, FaCloudRain, FaCloud, FaRegSnowflake,IoMdThunderstorm, FaSearch} from 'react-icons/fa';
 import { useState, useContext } from "react";
 import WeatherContext from "../contexts/WeatherContext";
-import styles from "./HourlyDisplay.module.css"
+import styles from "./HourlyDisplay.module.css";
 
 function HourlyDisplay({ weather }) {
   const icon_URL = "https://openweathermap.org/img/wn/";
@@ -42,11 +42,10 @@ function HourlyDisplay({ weather }) {
             <div className="flex flex-col items-center" key={hour.dt}>
               <p className="font-light text-m">{timeConverter(hour.dt)}</p>
               <div className={styles.tooltip}>
-                <img 
-                  src={`${icon_URL}${hour.weather[0].icon}@2x.png`} 
-                  alt=""
-                />
-                <span className={styles.tooltiptext}>{hour.weather[0].description}</span>
+                <img src={`${icon_URL}${hour.weather[0].icon}@2x.png`} alt="" />
+                <span className={styles.tooltiptext}>
+                  {hour.weather[0].description}
+                </span>
               </div>
               <p className="font-light text-m">
                 {hour.main.temp.toFixed(1)} {ctx.isMetric ? "°C" : "°F"}

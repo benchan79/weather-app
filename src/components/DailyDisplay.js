@@ -1,6 +1,7 @@
 // import { FaSun, FaCloudRain, FaCloud, FaRegSnowflake } from "react-icons/fa";
 import { useState, useContext } from "react";
 import WeatherContext from "../contexts/WeatherContext";
+import styles from "./DailyDisplay.module.css";
 
 function DailyDisplay({ weather }) {
   const icon_URL = "https://openweathermap.org/img/wn/";
@@ -25,7 +26,7 @@ function DailyDisplay({ weather }) {
   return (
     <>
       <div className="text-blue-800 mt-10">
-        <div className="flex items-center justify-start">
+        <div className="flex items-center justify-start text-lg">
           <p>Daily Forecast</p>
         </div>
         <hr className="my-3" />
@@ -39,10 +40,15 @@ function DailyDisplay({ weather }) {
           )}
           {weather.list.slice(daysCount, daysCount + 5).map((day) => (
             <div className="flex flex-col items-center" key={day.dt}>
-              <p className="font-light text-sm">{timeConverter(day.dt)}</p>
-              <p className="font-light text-sm">{day.weather[0].description}</p>
-              <img src={`${icon_URL}${day.weather[0].icon}@2x.png`} alt="" />
-              <p>
+              <p className="font-light text-m">{timeConverter(day.dt)}</p>
+              {/* <p className="font-light text-sm">{day.weather[0].description}</p> */}
+              <div className={styles.tooltip}>
+                <img src={`${icon_URL}${day.weather[0].icon}@2x.png`} alt="" />
+                <span className={styles.tooltiptext}>
+                  {day.weather[0].description}
+                </span>
+              </div>
+              <p className="font-light text-m">
                 {day.temp.day.toFixed(1)} {ctx.isMetric ? "°C" : "°F"}
               </p>
             </div>
