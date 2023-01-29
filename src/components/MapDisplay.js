@@ -1,4 +1,6 @@
 import React, { useState, useCallback, useEffect, useContext } from "react";
+import { FaInfoCircle } from "react-icons/fa";
+import styles from "./MapDisplay.module.css";
 import {
   GoogleMap,
   MarkerF,
@@ -168,7 +170,7 @@ function MapDisplay({ weather, searchParam, onSubmit, apiKey, owmKey }) {
 
   return (
     <>
-      <div className="overlays-panel">
+      <div className={styles.overlaysPanel}>
         <button onClick={() => setWeatherMapType("temp_new")}>
           Temperature
         </button>
@@ -187,10 +189,21 @@ function MapDisplay({ weather, searchParam, onSubmit, apiKey, owmKey }) {
         </button>
       </div>
 
-      <div className="markers-panel">
-        <button onClick={hideMarkers}>Hide Markers</button>
-        <button onClick={showMarkers}>Show Markers</button>
-        <button onClick={deleteMarkers}>Delete Markers</button>
+      <div className={styles.markersPanel}>
+        <button onClick={hideMarkers}>Hide Icons</button>
+        <button onClick={showMarkers}>Show Icons</button>
+        <button onClick={deleteMarkers}>Remove All Icons</button>
+      </div>
+
+      <div className={styles.tooltip}>
+        <button>
+          <FaInfoCircle size={30} />
+        </button>
+        <div className={styles.tooltiptext}>
+          <p>Click on Weather Icon to see more info</p>
+          <p>Right Click on Weather Icon to Remove it</p>
+          <p>Click on other locations to add more icons</p>
+        </div>
       </div>
 
       <GoogleMap
@@ -229,19 +242,21 @@ function MapDisplay({ weather, searchParam, onSubmit, apiKey, owmKey }) {
               setSelected(null);
             }}
           >
-            <div>
-              <h2>{selected.name}</h2>
-              <p>{selected.desc}</p>
-              <p>
-                Temperature: {selected.temp} {ctx.isMetric ? "°C" : "°F"}
-              </p>
-              <p>
-                Wind speed: {selected.wind} {ctx.isMetric ? "m/s" : "ft/s"}
-              </p>
-              <p>Humidity: {selected.humidity}%</p>
-              {/* <span role="img" aria-label="weather">
-                  <img src={`https://openweathermap.org/img/wn/${selected.icon}@2x.png`} alt="" />
-              </span> */}
+            <div className="text-base">
+              <p className="font-bold">{selected.name}</p>
+              <ul className="list-disc list-inside">
+                <li>
+                  {selected.desc.charAt(0).toUpperCase() +
+                    selected.desc.slice(1)}
+                </li>
+                <li>
+                  Temperature: {selected.temp} {ctx.isMetric ? "°C" : "°F"}
+                </li>
+                <li>
+                  Wind speed: {selected.wind} {ctx.isMetric ? "m/s" : "ft/s"}
+                </li>
+                <li>Humidity: {selected.humidity}%</li>
+              </ul>
             </div>
           </InfoWindowF>
         ) : null}
